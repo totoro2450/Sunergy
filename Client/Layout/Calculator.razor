@@ -1,12 +1,62 @@
-﻿@using GoogleMapsComponents
+﻿@* @using GoogleMapsComponents
+@using GoogleMapsComponents.Maps; *@
+
+@* <div class="calculator-main">
+    <GoogleMap  @ref="@_map1" Id="map1" Options="@_mapOptions">
+    </GoogleMap>
+</div> *@
+@* <h3 class="calculator">Calculator</h3> *@
+@* <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM357oskRNJ_s4RB1ZRGzZu9-mIgMQTqI&callback=console.debug&libraries=maps,marker&v=beta" /> *@
+@* <gmp-map center="40.12150192260742,-100.45039367675781" zoom="12" map-id="DEMO_MAP_ID">
+    <gmp-advanced-marker position="40.12150192260742,-100.45039367675781" title="My location"></gmp-advanced-marker>
+</gmp-map> *@
+    
+@* @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 
-<div class="calculator-main">
-    <GoogleMap  @ref="@_map1" Id="map1" Options="@_mapOptions" OnAfterInit="@(async () => await OnAfterInitAsync())">
-    </GoogleMap>
+<h1>Google Map</h1>
+<div style="height:@Height">
+    <GoogleMap @ref="@_map1" Id="map1" Options="@mapOptions" Height="100%" OnAfterInit="AfterMapRender"></GoogleMap>
 </div>
-    @* <h3 class="calculator">Calculator</h3> *@
-    @* <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM357oskRNJ_s4RB1ZRGzZu9-mIgMQTqI&callback=console.debug&libraries=maps,marker&v=beta" /> *@
-    @* <gmp-map center="40.12150192260742,-100.45039367675781" zoom="12" map-id="DEMO_MAP_ID">
-        <gmp-advanced-marker position="40.12150192260742,-100.45039367675781" title="My location"></gmp-advanced-marker>
-    </gmp-map> *@
+@functions {
+    private GoogleMap _map1;
+    private MapOptions mapOptions;	
+
+    protected override void OnInitialized()
+    {
+        mapOptions = new MapOptions()
+        {
+            Zoom = 13,
+            Center = new LatLngLiteral()
+            {
+                Lat = 13.505892,
+                Lng = 100.8162
+            },
+            MapTypeId = MapTypeId.Roadmap
+        };
+    }
+
+    private async Task AfterMapRender()
+    {
+        _bounds = await LatLngBounds.CreateAsync(_map1.JsRuntime);
+    }		
+} *@
+
+@using GoogleMapsComponents
+@using GoogleMapsComponents.Maps
+
+<h1>Map Events</h1>
+
+<GoogleMap  @ref="@_map1" Id="map1" Options="@_mapOptions" OnAfterInit="@(async () => await OnAfterInitAsync())">
+</GoogleMap>
+
+<button @onclick="AddMarker">Add marker</button>&nbsp;
+<button @onclick="RemoveMarker">Remove marker</button>
+<br>
+<input type="checkbox" bind="@DisablePoiInfoWindow" />Disable POI's popup info window
+<br>
+
+
+@code {
+    
+}

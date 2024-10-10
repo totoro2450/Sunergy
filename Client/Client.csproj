@@ -5,7 +5,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	<RootNamespace>BlazorApp.Client</RootNamespace>
+	<UserSecretsId>2177166b-24a8-4357-a458-1f278f1cf341</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="DotNetEnv" Version="3.1.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BlazorGoogleMaps" Version="4.7.14" />
