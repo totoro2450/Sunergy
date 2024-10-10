@@ -1,6 +1,7 @@
 ﻿using GoogleMapsComponents.Maps;
 using GoogleMapsComponents;
 using Microsoft.AspNetCore.Components;
+using System.Collections;
 
 namespace BlazorApp.Client.Layout
 {
@@ -16,10 +17,17 @@ namespace BlazorApp.Client.Layout
 
         private Stack<Marker> _markers = new Stack<Marker>();
         private string _labelText = "";
+        private EnvironmentInterop _environmentInterop;
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             Console.WriteLine("Start OnInitialized: " + Environment.GetEnvironmentVariable("GOOGLE_MAP_API_KEY"));
+            Console.WriteLine("Environment.CurrentDirectory" + Environment.MachineName);
+        
+
+            _environmentInterop = new EnvironmentInterop(JSRuntime);
+            var apiUrl = await _environmentInterop.GetEnvironmentVariable("GOOGLE_MAP_API_KEY");
+            Console.WriteLine("ApiUrl: " + apiUrl);
             _mapOptions = new MapOptions()
             {
                 Zoom = 13,
