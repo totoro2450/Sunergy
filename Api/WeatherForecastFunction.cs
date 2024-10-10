@@ -15,9 +15,19 @@ namespace Api
             _logger = loggerFactory.CreateLogger<HttpTrigger>();
         }
 
-        [Function("WeatherForecast")]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
+        [Function("HttpExample")]
+        public HttpResponseData HttpExample([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
         {
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            response.WriteString("Example Here!");
+            return response;
+        }
+
+        [Function("WeatherForecast")]
+        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "api/WeatherForecast")] HttpRequestData req)
+        {
+            _logger.LogInformation("WeatherForecast function processed a request.");
+            Console.WriteLine("C# HTTP trigger function processed a request. WeatherForecast");
             var randomNumber = new Random();
             var temp = 0;
 
@@ -35,11 +45,13 @@ namespace Api
         }
 
         [Function("GetMapToken")]
-        public HttpResponseData GetMapToken([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
+        public HttpResponseData GetMapToken([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "api/GetMapToken")] HttpRequestData req)
         {
+            _logger.LogInformation("GetMapToken function processed a request.");
+            Console.WriteLine("C# HTTP trigger function processed a request. GetMapToken");
             var token = Environment.GetEnvironmentVariable("GOOGLE_MAPS_TOKEN");
             var response = req.CreateResponse(HttpStatusCode.OK);
-            response.WriteString(token!);
+            response.WriteString("token!");
 
             return response;
         }
