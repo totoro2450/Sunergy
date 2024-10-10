@@ -34,6 +34,16 @@ namespace Api
             return response;
         }
 
+        [Function("GetMapToken")]
+        public HttpResponseData GetMapToken([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
+        {
+            var token = Environment.GetEnvironmentVariable("GOOGLE_MAPS_TOKEN");
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            response.WriteString(token!);
+
+            return response;
+        }
+
         private string GetSummary(int temp)
         {
             var summary = "Mild";
