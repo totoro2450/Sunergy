@@ -13,7 +13,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 
 using var httpClient = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
-var mapKeyResponse = await httpClient.GetFromJsonAsync<string>("api/environment/GetMapToken");
+var mapKeyResponse = await httpClient.GetFromJsonAsync<string>("api/GetMapToken");
 
 if (string.IsNullOrEmpty(mapKeyResponse))
 {
