@@ -24,7 +24,7 @@ namespace Api
         }
 
         [Function("WeatherForecast")]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "api/WeatherForecast")] HttpRequestData req)
+        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             _logger.LogInformation("WeatherForecast function processed a request.");
             Console.WriteLine("C# HTTP trigger function processed a request. WeatherForecast");
@@ -45,7 +45,7 @@ namespace Api
         }
 
         [Function("GetMapToken")]
-        public HttpResponseData GetMapToken([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "api/GetMapToken")] HttpRequestData req)
+        public HttpResponseData GetMapToken([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "map/GetMapToken")] HttpRequestData req)
         {
             _logger.LogInformation("GetMapToken function processed a request.");
             Console.WriteLine("C# HTTP trigger function processed a request. GetMapToken");
