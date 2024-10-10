@@ -1,0 +1,8 @@
+﻿.calculator-main ::deep gmp-map {
+    height: calc(100vh - 150px);
+}
+
+.calculator {
+    color: antiquewhite;
+}
+/* Optional: Makes the sample page fill the window. */
