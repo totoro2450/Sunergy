@@ -1,4 +1,95 @@
+::deep .nav-link {
+    display: inline;
+    color: white;
+}
+
+.logo {
+    display: inline;
+    color: white;
+    font-size: x-large;
+    width: 200px;
+    margin-top: 0.5rem;
+}
+
+    .logo ::deep a {
+        display: inline;
+        color: white;
+        padding: .5rem 0;
+        text-decoration: none;
+    }
+
 .navbar-toggler {
+    color: white;
+    margin-top: 0.75rem;
+}
+
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+
+    .navbar-toggler ::deep .bi {
+        font-size: x-large;
+    }
+
+.contacts-header {
+    display: inline;
+    color: white;
+    width: 170px;
+    margin-top: 0.9rem;
+}
+
+.logo ::deep span {
+    color: yellow;
+    font-size: x-large;
+}
+
+.header .nal-link {
+    display: flex;
+}
+
+.nav-scrollable {
+    justify-content: center;
+    display: flex;
+    margin-top: .50rem;
+    width: 100%;
+}
+
+@media (min-width: 1100px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .collapse {
+        display: flex;
+    }
+}
+
+@media (max-width: 1100px) {
+    .collapse {
+        display: none !important;
+    }
+
+    .nav-scrollable {
+        position: fixed;
+        display: inherit;
+        top: 2.5rem;
+        left: 0;
+        max-height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+        background: #258cfb;
+        padding: 0 25px;
+    }
+
+    ::deep .nav-link {
+        display: block;
+        border-bottom: white 1px solid;
+    }
+    ::deep .nav-link:last-child {
+        border-bottom: none;
+    }
+}
+
+/*.navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -65,19 +156,4 @@
     color: white;
 }
 
-@media (min-width: 641px) {
-    .navbar-toggler {
-        display: none;
-    }
-
-    .collapse {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
-    }
-    
-    .nav-scrollable {
-        /* Allow sidebar to scroll for tall menus */
-        height: calc(100vh - 3.5rem);
-        overflow-y: auto;
-    }
-}
+*/
