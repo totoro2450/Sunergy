@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Net;
 using BlazorApp.Shared;
 using Microsoft.Azure.Functions.Worker;
@@ -45,13 +46,22 @@ namespace Api
         }
 
         [Function("GetMapToken")]
-        public HttpResponseData GetMapToken([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "map/GetMapToken")] HttpRequestData req)
+        public HttpResponseData GetMapToken([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             _logger.LogInformation("GetMapToken function processed a request.");
             Console.WriteLine("C# HTTP trigger function processed a request. GetMapToken");
-            var token = Environment.GetEnvironmentVariable("GOOGLE_MAPS_TOKEN");
+            var api_key = Environment.GetEnvironmentVariable("GOOGLE_MAP_API_KEY", EnvironmentVariableTarget.Machine);
+            if (string.IsNullOrEmpty(api_key))
+            {
+                api_key = "";
+                var tokens = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Machine);
+                foreach (DictionaryEntry item in tokens)
+                {
+                    api_key += $"Key: {item.Key}; ";
+                }
+            }
             var response = req.CreateResponse(HttpStatusCode.OK);
-            response.WriteString("token!");
+            response.WriteString(api_key);
 
             return response;
         }

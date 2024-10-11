@@ -11,15 +11,18 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 //var mapKey = "AIzaSyDM357oskRNJ_s4RB1ZRGzZu9-mIgMQTqI";
 //builder.Services.AddBlazorGoogleMaps(mapKey);
 
-
+var mapKeyResponse = "";
 using var httpClient = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
-var mapKeyResponse = await httpClient.GetFromJsonAsync<string>("api/GetMapToken");
+Console.WriteLine("Uri: " + new Uri(builder.HostEnvironment.BaseAddress));
+//mapKeyResponse = await httpClient.GetFromJsonAsync<string>("api/GetMapToken");
 
 if (string.IsNullOrEmpty(mapKeyResponse))
 {
-    throw new Exception("Google Maps API key could not be retrieved.");
+    mapKeyResponse = "AIzaSyDM357oskRNJ_s4RB1ZRGzZu9-mIgMQTqI";
+// throw new Exception("Google Maps API key could not be retrieved.");
 }
-
+IConfiguration configuration = builder.Configuration;
+// Console.WriteLine("GOOGLE_MAP_API_KEY: " + configuration["GOOGLE_MAP_API_KEY"]);
 // Use the mapKey fetched from the server API
 builder.Services.AddBlazorGoogleMaps(mapKeyResponse);
 

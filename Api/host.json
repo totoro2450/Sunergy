@@ -11,6 +11,13 @@
         "excludedTypes": "Request"
       },
       "enableLiveMetricsFilters": true
+    },
+    "logLevel": {
+      "Function": "Information",
+      "Host.Results": "Information",
+      "Host.Aggregator": "Information",
+      "Host.Startup": "Information",
+      "Function.HttpTrigger": "Information"
     }
   }
 }
