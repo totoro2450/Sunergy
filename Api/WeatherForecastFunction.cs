@@ -50,11 +50,11 @@ namespace Api
         {
             _logger.LogInformation("GetMapToken function processed a request.");
             Console.WriteLine("C# HTTP trigger function processed a request. GetMapToken");
-            var api_key = Environment.GetEnvironmentVariable("GOOGLE_MAP_API_KEY", EnvironmentVariableTarget.Machine);
+            var api_key = Environment.GetEnvironmentVariable("GOOGLE_MAP_API_KEY", EnvironmentVariableTarget.User);
             if (string.IsNullOrEmpty(api_key))
             {
                 api_key = "";
-                var tokens = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Machine);
+                var tokens = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.User);
                 foreach (DictionaryEntry item in tokens)
                 {
                     api_key += $"Key: {item.Key}; ";
