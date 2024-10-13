@@ -1,12 +1,117 @@
 ﻿@using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
 
-<div class="calculator-main">
-    <GoogleMap  @ref="@_map1" Id="map1" Options="@_mapOptions" OnAfterInit="@(async () => await OnAfterInitAsync())">
-    </GoogleMap>
+<h1>Map Events</h1>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="dropdown">
+            <button @onclick="ToggleLocationsList"
+                    class="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Dropdown button
+            </button>
+            <div class="dropdown-menu @(_showLocationsList? "d-block": "d-none")" aria-labelledby="dropdownMenuButton">
+                @foreach (var location in KnownLocaltions)
+                {
+                    <span class="dropdown-item" href="#" @onclick="() => OnLocationSelect(location)">@location.Title - @location.Address</span>
+                }
+            </div>
+        </div>
+        <div>
+            @if (CurrentRequest != null)
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <span>@nameof(CurrentRequest.Title)</span>
+                        <input type="text" name="@nameof(CurrentRequest.Title)" @bind-value="CurrentRequest.Title" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span>@nameof(CurrentRequest.Address)</span>
+                        <input type="text" name="@nameof(CurrentRequest.Address)" @bind-value="CurrentRequest.Address" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span>@nameof(CurrentRequest.RoofArea)</span>
+                        <input type="text" name="@nameof(CurrentRequest.RoofArea)" @bind-value="CurrentRequest.RoofArea" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <span>@nameof(CurrentRequest.Coordinates.Latitude)</span>
+                        <input type="text" name="@nameof(CurrentRequest.Coordinates.Latitude)" @bind-value="CurrentRequest.Coordinates.Latitude" />
+                    </div>
+                    <div class="col-6">
+                        <span>@nameof(CurrentRequest.Coordinates.Longitude)</span>
+                        <input type="text" name="@nameof(CurrentRequest.Coordinates.Longitude)" @bind-value="CurrentRequest.Coordinates.Longitude" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span>@nameof(CurrentRequest.InvestmentPrice)</span>
+                        <input type="text" name="@nameof(CurrentRequest.InvestmentPrice)" @bind-value="CurrentRequest.InvestmentPrice" />
+                        <span class="note">Empty or 0 - default price</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span>@nameof(CurrentRequest.EnergyPrice)</span>
+                        <input type="text" name="@nameof(CurrentRequest.EnergyPrice)" @bind-value="CurrentRequest.EnergyPrice" />
+                        <span class="note">Empty or 0 - default price</span>
+                    </div>
+                </div>
+            }
+        </div>
+        <button @onclick="Calculate">Calculate</button>
+    </div>
+    <div class="col-12 col-md-6">
+        <GoogleMap @ref="@_map1" Id="map1" Options="@_mapOptions" OnAfterInit="@(async () => await OnAfterInitAsync())">
+        </GoogleMap>
+    </div>
 </div>
-    @* <h3 class="calculator">Calculator</h3> *@
-    @* <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDM357oskRNJ_s4RB1ZRGzZu9-mIgMQTqI&callback=console.debug&libraries=maps,marker&v=beta" /> *@
-    @* <gmp-map center="40.12150192260742,-100.45039367675781" zoom="12" map-id="DEMO_MAP_ID">
-        <gmp-advanced-marker position="40.12150192260742,-100.45039367675781" title="My location"></gmp-advanced-marker>
-    </gmp-map> *@
+
+@if (CurrentResponce != null)
+{
+    <div class="row">
+        <div class="col-12">
+            <h2>Results:</h2>
+        </div>
+        <div class="col-12">
+            <span>@nameof(CurrentResponce.TotalInvestment) - @CurrentResponce.TotalInvestment</span>
+        </div>
+        <div class="col-12">
+            <span>@nameof(CurrentResponce.AvgGeneration) - @CurrentResponce.AvgGeneration MWt/Year</span>
+        </div>
+        <div class="col-12">
+            <span>@nameof(CurrentResponce.TotalIncome) - @CurrentResponce.TotalIncome UAH</span>
+        </div>
+        <div class="col-12">
+            <span>@nameof(CurrentResponce.Coordinates) - @CurrentResponce.Coordinates.Latitude, @CurrentResponce.Coordinates.Longitude</span>
+        </div>
+        <div class="col-12">
+            <span>@nameof(CurrentResponce.RoofArea) - @CurrentResponce.RoofArea</span>
+        </div>
+        <div class="col-12">
+            <span>@nameof(CurrentResponce.EffectiveRoofArea) - @CurrentResponce.EffectiveRoofArea</span>
+        </div>
+        <div class="col-12">
+            <span>@nameof(CurrentResponce.EnergyPrice) - @CurrentResponce.EnergyPrice UAH/MWt*hour</span>
+        </div>
+        <div class="col-12">
+            <span>@nameof(CurrentResponce.MinGenetation) - @CurrentResponce.MinGenetation MWt/Month</span>
+        </div>
+        <div class="col-12">
+            <span>@nameof(CurrentResponce.MaxGeneration) - @CurrentResponce.MaxGeneration MWt/Month</span>
+        </div>
+    </div>
+}

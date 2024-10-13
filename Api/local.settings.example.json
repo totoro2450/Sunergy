@@ -1,11 +1,11 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "GOOGLE_MAP_API_KEY":  "Google_Map_API_Key"
   },
   "Host": {
-    "LocalHttpPort": 7071,
     "CORS": "*",
     "CORSCredentials": false
   }

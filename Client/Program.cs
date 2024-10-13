@@ -4,11 +4,24 @@ using BlazorApp.Client;
 using GoogleMapsComponents;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
+
+var mapKeyResponse = "";
+var baseAddress = "";
+
+if (builder.HostEnvironment.IsDevelopment())
+    baseAddress = "http://localhost:7071";
+else
+    baseAddress = builder.HostEnvironment.BaseAddress;
+
+using var httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
+Console.WriteLine("Uri: " + new Uri(builder.HostEnvironment.BaseAddress));
+mapKeyResponse = await httpClient.GetStringAsync("api/GetMapToken");
+
+builder.Services.AddBlazorGoogleMaps(mapKeyResponse);
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress) });
-var mapKey = "AIzaSyDM357oskRNJ_s4RB1ZRGzZu9-mIgMQTqI";
-builder.Services.AddBlazorGoogleMaps(mapKey);
+
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
 
 await builder.Build().RunAsync();
