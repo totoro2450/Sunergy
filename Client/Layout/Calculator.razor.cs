@@ -1,13 +1,23 @@
 ﻿using GoogleMapsComponents.Maps;
 using GoogleMapsComponents;
 using Microsoft.AspNetCore.Components;
-using System.Collections;
+using BlazorApp.Shared.Classes;
+using System.Net.Http.Json;
+using BlazorApp.Client.Extensions;
 
 namespace BlazorApp.Client.Layout
 {
     public partial class Calculator : ComponentBase
     {
+        public const string LocalhostApiUri = "http://localhost";
+        public const string LocalHostApiPort = "7071";
+        private string BaseAddress = "";
+        private static int DefaultZoom = 15;
         private GoogleMap _map1 = default!;
+        private bool _showLocationsList = false;
+        private CalculateRequest? CurrentRequest;
+        private CalculateResponce? CurrentResponce;
+        private List<CalculateRequest> KnownLocaltions = new List<CalculateRequest>();
 
         private MapOptions _mapOptions = default!;
 
@@ -22,11 +32,11 @@ namespace BlazorApp.Client.Layout
         {
             _mapOptions = new MapOptions()
             {
-                Zoom = 13,
+                Zoom = DefaultZoom,
                 Center = new LatLngLiteral()
                 {
-                    Lat = 13.505892,
-                    Lng = 100.8162
+                    Lat = 51.521654,
+                    Lng = 30.754540
                 },
                 MapTypeId = MapTypeId.Roadmap
             };
@@ -34,6 +44,7 @@ namespace BlazorApp.Client.Layout
 
         private async Task OnAfterInitAsync()
         {
+            await GetKnownLocations();
             //Debug.WriteLine("Start OnAfterRenderAsync");
 
             await _map1.InteropObject.AddListener("bounds_changed", OnBoundsChanged);
@@ -73,6 +84,63 @@ namespace BlazorApp.Client.Layout
             await _map1.InteropObject.AddListener("zoom_changed", OnZoomChanged);
         }
 
+        private void UpdateCurrentBaseAddress()
+        {
+            var baseAddress = NavigationManager.BaseUri;
+            if (baseAddress.StartsWith(LocalhostApiUri))
+                BaseAddress = $"{LocalhostApiUri}:{LocalHostApiPort}";
+            else
+                BaseAddress = baseAddress;
+        }
+
+        private async Task Calculate()
+        {
+            var response = await Http.PostAsJsonAsync($"{BaseAddress}/api/Calculate", CurrentRequest);
+            var result = await response.Content.ReadFromJsonAsync<CalculateResponce>();
+            CurrentResponce = result;
+        }
+
+        private async Task GetKnownLocations()
+        {
+            var response = await Http.PostAsync($"{BaseAddress}/api/GetKnownLocations", new StringContent(""));
+            var knownLocaltions = await response.Content.ReadFromJsonAsync<List<CalculateRequest>>();
+            if (knownLocaltions != null)
+                KnownLocaltions = knownLocaltions;
+
+            StateHasChanged();
+        }
+
+        private async Task OnLocationSelect(CalculateRequest request)
+        {
+            if (request == null) return;
+            CurrentRequest = request;
+            DisplayLocationMarker();
+            await AddMarker(request.Coordinates);
+            await ShowMarkerOnMap(request.Coordinates);
+            await SetZoom(17);
+            HideLocationsList();
+        }
+
+        private void ShowLocationsList()
+        {
+            _showLocationsList = true;
+        }
+
+        private void HideLocationsList()
+        {
+            _showLocationsList = false;
+        }
+
+        private void ToggleLocationsList()
+        {
+            _showLocationsList = !_showLocationsList;
+        }
+
+        private void DisplayLocationMarker()
+        {
+
+        }
+
         private void OnBoundsChanged()
         {
             //Console.WriteLine("Bounds changed.");
@@ -95,7 +163,7 @@ namespace BlazorApp.Client.Layout
 
         private async Task OnClick(MouseEvent e)
         {
-            //Console.WriteLine("Click.");
+            Console.WriteLine($"Click Lng: {e.LatLng.Lng}; Lat: {e.LatLng.Lat}");
 
             _events.Insert(0, $"Click {e.LatLng}.");
             _events = _events.Take(100).ToList();
@@ -249,34 +317,39 @@ namespace BlazorApp.Client.Layout
             StateHasChanged();
         }
 
-        private async Task AddMarker()
+        private async Task AddMarker(Coordinates coordinates)
         {
+            await RemoveMarker();
+
+            var position = coordinates.ToLatLngLiteral();
+            var title = CurrentRequest != null ? CurrentRequest.Title : $"{position.Lat}, {position.Lng}";
+
             var marker = await Marker.CreateAsync(_map1.JsRuntime,
                 new MarkerOptions()
                 {
-                    Position = await _map1.InteropObject.GetCenter(),
+                    Position = position,
                     Map = _map1.InteropObject,
-                    Label = new MarkerLabel { Text = $"Test {_markers.Count()}", FontWeight = "bold" },
-                    Draggable = true,
-                    Icon = new Icon()
-                    {
-                        Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                    }
-                    //Icon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                });
+                    Label = new MarkerLabel { Text = title, FontWeight = "normal" },
+                    Draggable = false,
+                    //Icon = new Icon()
+                    //{
+                    //    Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                    //}
+                }
+            );
 
             //await marker.SetMap(map1);
 
             //var map = await marker.GetMap();
 
-            var icon = await marker.GetIcon();
+            //var icon = await marker.GetIcon();
 
-            Console.WriteLine($"Get icon result type is : {icon.Value.GetType()}");
+            //Console.WriteLine($"Get icon result type is : {icon.Value.GetType()}");
 
-            icon.Switch(
-                s => Console.WriteLine(s),
-                i => Console.WriteLine(i.Url),
-                _ => { });
+            //icon.Switch(
+            //    s => Console.WriteLine(s),
+            //    i => Console.WriteLine(i.Url),
+            //    _ => { });
 
             //if (map == map1.InteropObject)
             //{
@@ -290,14 +363,14 @@ namespace BlazorApp.Client.Layout
             _markers.Push(marker);
             _labelText = await marker.GetLabelText();
 
-            await marker.AddListener<MouseEvent>("click", async e =>
-            {
-                string markerLabelText = await marker.GetLabelText();
-                _events.Add("click on " + markerLabelText);
-                StateHasChanged();
-                await e.Stop();
-            });
-            await marker.AddListener<MouseEvent>("dragend", async e => await OnMakerDragEnd(marker, e));
+            //await marker.AddListener<MouseEvent>("click", async e =>
+            //{
+            //    string markerLabelText = await marker.GetLabelText();
+            //    _events.Add("click on " + markerLabelText);
+            //    StateHasChanged();
+            //    await e.Stop();
+            //});
+            //await marker.AddListener<MouseEvent>("dragend", async e => await OnMakerDragEnd(marker, e));
         }
 
         private async Task OnMakerDragEnd(Marker m, MouseEvent e)
@@ -320,5 +393,14 @@ namespace BlazorApp.Client.Layout
             _labelText = _markers.Any() ? await _markers.Peek().GetLabelText() : "";
         }
 
+        private async Task ShowMarkerOnMap(Coordinates position)
+        {
+            await _map1.InteropObject.SetCenter(position.ToLatLngLiteral());
+        }
+
+        private async Task SetZoom(int zoomLevel = 16)
+        {
+            await _map1.InteropObject.SetZoom(zoomLevel);
+        }
     }
 }
