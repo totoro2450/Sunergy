@@ -105,7 +105,7 @@
             <span>@nameof(CurrentResponce.EffectiveRoofArea) - @CurrentResponce.EffectiveRoofArea</span>
         </div>
         <div class="col-12">
-            <span>@nameof(CurrentResponce.EnergyPrice) - @CurrentResponce.EnergyPrice kop/kWt*hour</span>
+            <span>@nameof(CurrentResponce.EnergyPrice) - @CurrentResponce.EnergyPrice UAH/MWt*hour</span>
         </div>
         <div class="col-12">
             <span>@nameof(CurrentResponce.MinGenetation) - @CurrentResponce.MinGenetation MWt/Month</span>
@@ -114,15 +114,4 @@
             <span>@nameof(CurrentResponce.MaxGeneration) - @CurrentResponce.MaxGeneration MWt/Month</span>
         </div>
     </div>
-}
-
-@* <button @onclick="AddMarker">Add marker</button>&nbsp;
-<button @onclick="RemoveMarker">Remove marker</button> *@
-<br>
-<input type="checkbox" bind="@DisablePoiInfoWindow" />Disable POI's popup info window
-<br>
-
-
-@code {
-
 }

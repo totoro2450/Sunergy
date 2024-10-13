@@ -90,9 +90,9 @@ namespace Api
                 EnergyPrice = request.EnergyPrice ?? GenerationData.EnergyPrice,
                 TotalInvestment = totalInvestment,
                 TotalIncome = Math.Round(income, 0),
-                AvgGeneration = Math.Round(avgGeneration/10, 1),
-                MinGenetation = Math.Round(minGenetation/10, 1),
-                MaxGeneration = Math.Round(maxGeneration/10, 1)
+                AvgGeneration = Math.Round(avgGeneration, 1),
+                MinGenetation = Math.Round(minGenetation, 1),
+                MaxGeneration = Math.Round(maxGeneration, 1)
             };
 
             return responce;
