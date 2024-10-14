@@ -1,0 +1,670 @@
+/* Меню */
+
+
+
+
+/* Стилі для навігаційного меню */
+.home-banner {
+    background-image: url('/images/homeImage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: calc(100vh - 200px);
+    margin: 0;
+    padding: 0;
+    color: white;
+    flex-flow: column;
+}
+
+@media (max-width: 1200px) {
+    .home-banner {
+        height: calc(100vh - 200px);
+    }
+
+}
+
+.title-container {
+    margin-top: 232px;
+    color: white;
+    font-weight: 600;
+    max-width: 1920px;
+    align-content: flex-start;
+}
+
+@media (max-width: 1200px) {
+    .title-container {
+        margin-top: 70px;
+    }
+}
+
+
+/* .title-main {
+    padding-left: 10%; 
+}
+
+.title-info-block {
+    padding-right: 10%; 
+} */
+
+.yellow-title {
+    color: #FFD84D;
+    font-size: 40px;
+    line-height: 48px;
+    font-weight: 500;
+}
+
+.big-title {
+    font-size: 90px;
+    line-height: 100px;
+    max-width: 730px;
+    font-weight: 700;
+}
+
+.title-info {
+    font-size: 36px;
+    line-height: 50px;
+}
+
+.short-text-info {
+    font-size: 20px;
+    line-height: 36px;
+    font-weight: 400;
+}
+
+/* Медіа-запити для подальшого зменшення розміру шрифтів на менших екранах */
+@media (max-width: 1400px) {
+    .yellow-title {
+        font-size: 38px;
+        line-height: 46px;
+    }
+
+    .big-title {
+        font-size: 85px;
+        line-height: 95px;
+    }
+
+    .title-info {
+        font-size: 34px;
+        line-height: 46px;
+    }
+
+    .short-text-info {
+        font-size: 18px;
+        line-height: 34px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .yellow-title {
+        font-size: 34px;
+        line-height: 42px;
+    }
+
+    .big-title {
+        font-size: 75px;
+        line-height: 85px;
+    }
+
+    .title-info {
+        font-size: 32px;
+    }
+
+    .short-text-info {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 992px) {
+    .yellow-title {
+        font-size: 30px;
+        line-height: 38px;
+    }
+
+    .big-title {
+        font-size: 65px;
+        line-height: 75px;
+    }
+
+    .title-info {
+        font-size: 30px;
+    }
+
+    .short-text-info {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .yellow-title {
+        font-size: 28px;
+        line-height: 36px;
+    }
+
+    .big-title {
+        font-size: 55px;
+        line-height: 65px;
+    }
+
+    .title-info {
+        font-size: 28px;
+    }
+
+    .short-text-info {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .yellow-title {
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .big-title {
+        font-size: 48px;
+        line-height: 56px;
+    }
+
+    .title-info {
+        font-size: 24px;
+    }
+
+    .short-text-info {
+        font-size: 14px;
+    }
+}
+
+
+/* стилі для кнопки в баннері*/
+.link-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-weight: 600;
+    border: 0;
+    background-color: #ffffffcc;
+    border-radius: 999px;
+    color: #202636;
+    font-size: 24px;
+    line-height: 32px;
+    box-shadow: 0px 82px 235px 0px #00307936;
+}
+
+.link-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    color: white;
+    background-color: #0052B4;
+    border-radius: 50%;
+    font-size: 27px;
+    /* Розмір іконки */
+}
+
+
+/* стилі для інформації над відео*/
+.card-calc {
+    font-size: 80px;
+    line-height: 80px;
+    color: #0052B4;
+}
+
+/* Для екранів менше ніж 1200px (наприклад, великий планшет або маленький ноутбук) */
+@media (max-width: 1199.98px) {
+    .card-calc {
+        font-size: 60px;
+        line-height: 60px;
+    }
+}
+
+/* Для екранів менше ніж 992px (планшети) */
+@media (max-width: 991.98px) {
+    .card-calc {
+        font-size: 50px;
+        line-height: 50px;
+    }
+}
+
+/* Для екранів менше ніж 768px (мобільні пристрої) */
+@media (max-width: 767.98px) {
+    .card-calc {
+        font-size: 40px;
+        line-height: 40px;
+    }
+}
+
+/* Для екранів менше ніж 576px (менші мобільні пристрої) */
+@media (max-width: 575.98px) {
+    .card-calc {
+        font-size: 30px;
+        line-height: 30px;
+    }
+}
+
+
+.card-text {
+    font-size: 32px;
+    line-height: 40px;
+    padding-bottom: 40px;
+}
+
+/* Для екранів менше ніж 1200px (великі планшети, маленькі ноутбуки) */
+@media (max-width: 1199.98px) {
+    .card-text {
+        font-size: 28px;
+        line-height: 36px;
+    }
+}
+
+/* Для екранів менше ніж 992px (планшети) */
+@media (max-width: 991.98px) {
+    .card-text {
+        font-size: 24px;
+        line-height: 32px;
+    }
+}
+
+/* Для екранів менше ніж 768px (мобільні пристрої) */
+@media (max-width: 767.98px) {
+    .card-text {
+        font-size: 20px;
+        line-height: 28px;
+    }
+}
+
+/* Для екранів менше ніж 576px (менші мобільні пристрої) */
+@media (max-width: 575.98px) {
+    .card-text {
+        font-size: 18px;
+        line-height: 24px;
+    }
+}
+
+
+.card-banner {
+    max-width: 520px;
+    background: #FFFFFFCC;
+    border-radius: 24px;
+    box-shadow: 0px 80px 232px 0px #0030793D;
+    padding: 68px 32px 32px 32px;
+    gap: 56px;
+    max-width: 520px;
+
+
+
+}
+
+/* стилі для video*/
+.video-container {
+    position: relative;
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+video {
+    aspect-ratio: 1.4 / 1;
+}
+
+.banner-absolute-text {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 40px;
+    color: white;
+    background: #0065dbf7;
+    border-top-right-radius: 999px;
+    border: 4px solid #83E9FF;
+    border-bottom: 0;
+    border-left: 0;
+    padding: 25px 20px;
+    padding-right: 80px;
+}
+
+.gradientunder {
+    background-image: linear-gradient(to bottom, #58c2ff73, transparent);
+    height: 100px;
+}
+
+
+/* стилі для blog*/
+.title-blog {
+    color: #36BA6F;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 40px;
+    text-transform: uppercase;
+    /* Робить текст великими буквами */
+    padding-bottom: 10px;
+    /* Додатковий відступ під текстом, якщо потрібно */
+}
+
+/* Для екранів менше 1200px */
+@media (max-width: 1199.98px) {
+    .title-blog {
+        font-size: 28px;
+        /* Зменшено для менших екранів */
+        line-height: 36px;
+        /* Зменшено для менших екранів */
+    }
+}
+
+/* Для екранів менше 992px */
+@media (max-width: 991.98px) {
+    .title-blog {
+        font-size: 24px;
+        /* Ще більше зменшено */
+        line-height: 32px;
+        /* Ще більше зменшено */
+    }
+}
+
+/* Для екранів менше 768px */
+@media (max-width: 767.98px) {
+    .title-blog {
+        font-size: 20px;
+        /* Ще більше зменшено */
+        line-height: 28px;
+        /* Ще більше зменшено */
+    }
+}
+
+/* Для екранів менше 576px */
+@media (max-width: 575.98px) {
+    .title-blog {
+        font-size: 18px;
+        /* Мінімальний розмір */
+        line-height: 24px;
+        /* Мінімальний розмір */
+    }
+}
+
+.header-text {
+    font-size: 56px;
+    font-weight: 500;
+    line-height: 68px;
+    color: #202636;
+
+}
+
+/* Для екранів менше 1200px */
+@media (max-width: 1199.98px) {
+    .header-text {
+        font-size: 48px;
+        /* Зменшено для менших екранів */
+        line-height: 58px;
+        /* Зменшено для менших екранів */
+    }
+}
+
+/* Для екранів менше 992px */
+@media (max-width: 991.98px) {
+    .header-text {
+        font-size: 40px;
+        /* Ще більше зменшено */
+        line-height: 50px;
+        /* Ще більше зменшено */
+    }
+}
+
+/* Для екранів менше 768px */
+@media (max-width: 767.98px) {
+    .header-text {
+        font-size: 32px;
+        /* Ще більше зменшено */
+        line-height: 40px;
+        /* Ще більше зменшено */
+    }
+}
+
+/* Для екранів менше 576px */
+@media (max-width: 575.98px) {
+    .header-text {
+        font-size: 28px;
+        /* Мінімальний розмір */
+        line-height: 36px;
+        /* Мінімальний розмір */
+    }
+}
+
+.header-btn {
+    background: #0052B4;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-weight: 600;
+    border: 0;
+    border-radius: 999px;
+    color: white;
+    font-size: 24px;
+    line-height: 32px;
+    box-shadow: 0px 82px 235px 0px #00307936;
+}
+
+.header-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: #0052B4;
+    background-color: white;
+    border-radius: 50%;
+    font-size: 27px;
+}
+
+.border-color-green {
+    border-color: #36BA6F;
+}
+
+.blog-item {
+    background-color: white;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.blog-item-teg {
+    color: #00B5E2;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 25px;
+    background-color: white;
+}
+
+/* Для екранів менше 1200px */
+@media (max-width: 1199.98px) {
+    .blog-item-teg {
+        font-size: 22px;
+        /* Зменшено для менших екранів */
+        line-height: 36px;
+        /* Зменшено для менших екранів */
+    }
+}
+
+/* Для екранів менше 992px */
+@media (max-width: 991.98px) {
+    .blog-item-teg {
+        font-size: 20px;
+        /* Ще більше зменшено */
+        line-height: 32px;
+        /* Ще більше зменшено */
+    }
+}
+
+/* Для екранів менше 768px */
+@media (max-width: 767.98px) {
+    .blog-item-teg {
+        font-size: 18px;
+        /* Ще більше зменшено */
+        line-height: 28px;
+        /* Ще більше зменшено */
+    }
+}
+
+/* Для екранів менше 576px */
+@media (max-width: 575.98px) {
+    .blog-item-teg {
+        font-size: 16px;
+        /* Мінімальний розмір */
+        line-height: 24px;
+        /* Мінімальний розмір */
+    }
+}
+
+.blog-item-title {
+    color: #202636;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    background-color: white;
+}
+
+/* Для екранів менше 1200px */
+@media (max-width: 1199.98px) {
+    .blog-item-title {
+        font-size: 30px;
+        /* Зменшено для менших екранів */
+        line-height: 40px;
+        /* Зменшено для менших екранів */
+    }
+}
+
+/* Для екранів менше 992px */
+@media (max-width: 991.98px) {
+    .blog-item-title {
+        font-size: 28px;
+        /* Ще більше зменшено */
+        line-height: 38px;
+        /* Ще більше зменшено */
+    }
+}
+
+/* Для екранів менше 768px */
+@media (max-width: 767.98px) {
+    .blog-item-title {
+        font-size: 24px;
+        /* Ще більше зменшено */
+        line-height: 36px;
+        /* Ще більше зменшено */
+    }
+}
+
+/* Для екранів менше 576px */
+@media (max-width: 575.98px) {
+    .blog-item-title {
+        font-size: 20px;
+        /* Мінімальний розмір */
+        line-height: 28px;
+        /* Мінімальний розмір */
+    }
+}
+
+.blog-item-text {
+    color: #737B8F;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 25px;
+    background-color: white;
+}
+
+/* Для екранів менше 1200px */
+@media (max-width: 1199.98px) {
+    .blog-item-text {
+        font-size: 22px;
+        /* Зменшено для менших екранів */
+        line-height: 38px;
+        /* Зменшено для менших екранів */
+    }
+}
+
+/* Для екранів менше 992px */
+@media (max-width: 991.98px) {
+    .blog-item-text {
+        font-size: 20px;
+        /* Ще більше зменшено */
+        line-height: 36px;
+        /* Ще більше зменшено */
+    }
+}
+
+/* Для екранів менше 768px */
+@media (max-width: 767.98px) {
+    .blog-item-text {
+        font-size: 18px;
+        /* Ще більше зменшено */
+        line-height: 32px;
+        /* Ще більше зменшено */
+    }
+}
+
+/* Для екранів менше 576px */
+@media (max-width: 575.98px) {
+    .blog-item-text {
+        font-size: 16px;
+        /* Мінімальний розмір */
+        line-height: 28px;
+        /* Мінімальний розмір */
+    }
+}
+
+.blog-item-btn-comtainer {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    background-color: white;
+}
+
+
+.blog-item-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-weight: 600;
+    border: 0;
+    border-radius: 999px;
+    color: #0052B4;
+    font-size: 24px;
+    line-height: 32px;
+    box-shadow: 0px 82px 235px 0px #00307936;
+}
+
+.blog-item-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: #0052B4;
+    border-radius: 50%;
+    font-size: 27px;
+    border: 1px solid #0052B4;
+}
+
+.blog-item-img {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    aspect-ratio: 1.4 / 1;
+}
+
+.img1 {
+    background-image: url('/images/item1.png');
+}
+
+.img2 {
+    background-image: url('/images/item2.png');
+}
+
+.img3 {
+    background-image: url('/images/item3.png');
+}
