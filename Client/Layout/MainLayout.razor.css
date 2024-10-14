@@ -1,5 +1,17 @@
-.page {
+/* .page {
     margin: 0 20px;
+} */
+
+.header{
+    position: absolute;
+    z-index: 1;
+}
+
+/* styles for text */
+
+.title_block{
+    font-size: 56px;
+    font-family: 'Rajdhani', sans-serif;
 }
 
 main {}
