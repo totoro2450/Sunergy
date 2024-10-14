@@ -15,6 +15,7 @@ namespace BlazorApp.Client.Layout
         private static int DefaultZoom = 15;
         private GoogleMap _map1 = default!;
         private bool _showLocationsList = false;
+        private bool _showDetails = false;
         private CalculateRequest? CurrentRequest;
         private CalculateResponce? CurrentResponce;
         private List<CalculateRequest> KnownLocaltions = new List<CalculateRequest>();
@@ -110,6 +111,18 @@ namespace BlazorApp.Client.Layout
             StateHasChanged();
         }
 
+        private async Task AddNewLocation()
+        {
+            CurrentRequest = new CalculateRequest();
+            var mapCenter = await _map1.InteropObject.GetCenter();
+            CurrentRequest.Coordinates = new Coordinates
+            {
+                Latitude = mapCenter.Lat,
+                Longitude = mapCenter.Lng
+            };
+            _showLocationsList = false;
+        }
+
         private async Task OnLocationSelect(CalculateRequest request)
         {
             if (request == null) return;
@@ -134,6 +147,11 @@ namespace BlazorApp.Client.Layout
         private void ToggleLocationsList()
         {
             _showLocationsList = !_showLocationsList;
+        }
+
+        private void ToggleDetails()
+        {
+            _showDetails = !_showDetails;
         }
 
         private void DisplayLocationMarker()

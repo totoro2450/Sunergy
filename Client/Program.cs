@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using BlazorApp.Client;
 using GoogleMapsComponents;
+using BlazorApp.Shared.Laguage;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -20,6 +21,7 @@ mapKeyResponse = await httpClient.GetStringAsync("api/GetMapToken");
 builder.Services.AddBlazorGoogleMaps(mapKeyResponse);
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress) });
+builder.Services.AddSingleton(lngService => new LanguageService(nameof(LanguageData.Ukrainian)));
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
