@@ -13,6 +13,7 @@ namespace BlazorApp.Shared.Classes
         public double EffectiveRoofArea { get; set; }
         public double RoofAngle { get; set; }
         public double EnergyPrice { get; set; }
+        public string CurrencyName { get; set; }
 
         // MWt*h per Year
         public double AvgGeneration { get; set; }
