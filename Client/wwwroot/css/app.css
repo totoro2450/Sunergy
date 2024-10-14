@@ -1,13 +1,11 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     /* background-color: #258cfb; */
-    background-color: transparent; 
 }
 
-body{
-    background-color: #5757570d; 
- }
- 
+ body {
+    background-color: #5757570d !important; 
+}
 
 h1:focus {
     outline: none;

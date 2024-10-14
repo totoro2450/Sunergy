@@ -1,6 +1,11 @@
 /* Меню */
 
 
+::deep .header {
+    position: absolute !important;
+background-color: red;
+}
+
 
 
 /* Стилі для навігаційного меню */
