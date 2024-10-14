@@ -78,7 +78,7 @@ namespace Api
             var energyPrice = request.EnergyPrice == null || request.EnergyPrice <= 0
                 ? GenerationData.EnergyPrice
                 : (double)request.EnergyPrice;
-            var income = avgGeneration * GenerationData.EnergyPrice;
+            var income = avgGeneration * energyPrice;
             var responce = new CalculateResponce
             {
                 Title = request.Title,
@@ -87,12 +87,13 @@ namespace Api
                 RoofArea = request.RoofArea,
                 EffectiveRoofArea = effectiveArea,
                 RoofAngle = request.RoofAngle ?? 0,
-                EnergyPrice = request.EnergyPrice ?? GenerationData.EnergyPrice,
+                EnergyPrice = energyPrice,
                 TotalInvestment = totalInvestment,
                 TotalIncome = Math.Round(income, 0),
                 AvgGeneration = Math.Round(avgGeneration, 1),
                 MinGenetation = Math.Round(minGenetation, 1),
-                MaxGeneration = Math.Round(maxGeneration, 1)
+                MaxGeneration = Math.Round(maxGeneration, 1),
+                CurrencyName = string.IsNullOrWhiteSpace(request.CurrencyName) ? "USD" : request.CurrencyName
             };
 
             return responce;

@@ -1,8 +1,29 @@
-﻿.calculator-main ::deep gmp-map {
+﻿.main-row {
+    max-width: 1920px;
+}
+
+.px-main {
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+@media (min-width: 1200px) {
+    .px-main {
+        padding-right: 10%;
+        padding-left: 10%;
+    }
+}
+
+.calculator-main ::deep gmp-map {
     height: calc(100vh - 150px);
 }
 
 .calculator {
     color: antiquewhite;
+}
+
+.result-item {
+    padding-right: 5%;
+    padding-left: 5%;
 }
 /* Optional: Makes the sample page fill the window. */
