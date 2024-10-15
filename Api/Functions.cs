@@ -70,7 +70,7 @@ namespace Api
             var investmentPrice = request.InvestmentPrice == null || request.InvestmentPrice <= 0
                 ? GenerationData.InvestmentPrice
                 : (double)request.InvestmentPrice;
-            var effectiveArea = request.RoofArea * GenerationData.EffectiveAreaCooficient;
+            var effectiveArea = Math.Round(request.RoofArea * GenerationData.EffectiveAreaCooficient, 2);
             var totalInvestment = request.RoofArea * investmentPrice;
             var avgGeneration = GenerationData.AvgGeneration * effectiveArea / GenerationData.GenerationCooficient;
             var minGenetation = GenerationData.MinGenetation * effectiveArea / GenerationData.GenerationCooficient;
