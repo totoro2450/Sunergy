@@ -10,14 +10,15 @@
         GetMapToken,
         TokenNotFound,
         InvalidRequestPayload,
-        CalculateFunctionProcessed,
-        GetMapTokenFunctionProcessed,
-        GetKnownLocationsFunctionProcessed,
         Summary,
         Date,
         AddNewObject,
         ShowDetailsAboutCalculations,
         HideDetailsAboutCalculations,
+        PowerName,
+        Month,
+        Year,
+        Hour,
 
         Address,
         RoofArea,
@@ -35,6 +36,9 @@
         Coordinates,
         EffectiveRoofArea,
 
-        CalculatorHeader
+        CalculatorHeader,
+
+        // Errors
+        ServerError,
     }
 }

@@ -13,10 +13,10 @@ namespace BlazorApp.Shared.Laguage
         public LanguageService(string languageTag = "English")
         {
             CurrentLanguageTag = languageTag;
-            GetLaguage(CurrentLanguageTag);
+            SetLaguage(CurrentLanguageTag);
         }
 
-        public void GetLaguage(string laguage)
+        public void SetLaguage(string laguage)
         {
             switch (laguage)
             {

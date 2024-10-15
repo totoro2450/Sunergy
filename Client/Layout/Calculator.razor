@@ -10,13 +10,28 @@
 
 <div class="main-row px-main">
     <div class="row border-bottom border-2 border-dark px-3 bm-2 bg-white">
-        <h2>@LanguageService.GetTraslation(LanguageKeys.CalculatorHeader)</h2>
+        <input @bind-value="SearchString" />
     </div>
+
+    @if (ContainErrors)
+    {
+        <div class="row my-2">
+            @foreach (var error in Errors)
+            {
+                <div class="col">
+                    <div class="alert alert-danger d-flex justify-content-between" role="alert">
+                        @error
+                        <div role="button" class="btn btn-close" @onclick="()=> RemoveError(error)"></div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 
     <div class="row py-2 pb-5">
         <div class="col-12 col-md-6">
             <div class="row pb-2">
-                <div class="col-auto">
+                <div class="col-auto @(KnownLocaltions.Any()? "": "d-none")">
                     <div class="dropdown">
                         <button @onclick="ToggleLocationsList"
                                 class="btn btn-primary dropdown-toggle"
@@ -114,11 +129,14 @@
                         </div>
                     }
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <button class="btn btn-primary" @onclick="Calculate">@LanguageService.GetTraslation(LanguageKeys.Calculate)</button>
+                @if (IsValidRequest())
+                {
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-primary" @onclick="Calculate">@LanguageService.GetTraslation(LanguageKeys.Calculate)</button>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
         <div class="col-12 col-md-6">
@@ -136,7 +154,7 @@
                         @LanguageService.GetTraslation(nameof(CurrentResponce.TotalInvestment))
                     </div>
                     <div>
-                        @CurrentResponce.TotalInvestment
+                        @MakeNumberReadable(CurrentResponce.TotalInvestment) @CurrentResponce.CurrencyName
                     </div>
                 </div>
             </div>
@@ -156,7 +174,7 @@
                         @LanguageService.GetTraslation(nameof(CurrentResponce.TotalIncome))
                     </div>
                     <div>
-                        @CurrentResponce.TotalIncome @CurrentResponce.CurrencyName
+                        @MakeNumberReadable(CurrentResponce.TotalIncome) @CurrentResponce.CurrencyName
                     </div>
                 </div>
             </div>
@@ -178,13 +196,20 @@
                 <div id="detailsInformation" class="mt-2 accordion-collapse collapse @(_showDetails? "show": "")" data-bs-parent="#accordionExample">
                     <div class="row">
                         <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.TotalInvestment)) - @CurrentResponce.TotalInvestment</span>
+                            <h5>@CurrentResponce.Title</h5>
                         </div>
                         <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.AvgGeneration)) - @CurrentResponce.AvgGeneration MWt/Year</span>
+                            <span>@CurrentResponce.Address</span>
                         </div>
                         <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.TotalIncome)) - @CurrentResponce.TotalIncome @CurrentResponce.CurrencyName</span>
+                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.TotalInvestment)) - @MakeNumberReadable(CurrentResponce.TotalInvestment)</span>
+                        </div>
+                        <div class="col-12">
+                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.AvgGeneration)) - @CurrentResponce.AvgGeneration </span>
+                            <span>@LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Year)</span>
+                        </div>
+                        <div class="col-12">
+                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.TotalIncome)) - @MakeNumberReadable(CurrentResponce.TotalIncome) @CurrentResponce.CurrencyName</span>
                         </div>
                         <div class="col-12">
                             <span>@LanguageService.GetTraslation(nameof(CurrentResponce.Coordinates)) - @CurrentResponce.Coordinates.Latitude, @CurrentResponce.Coordinates.Longitude</span>
@@ -196,13 +221,16 @@
                             <span>@LanguageService.GetTraslation(nameof(CurrentResponce.EffectiveRoofArea)) - @CurrentResponce.EffectiveRoofArea</span>
                         </div>
                         <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.EnergyPrice)) - @CurrentResponce.EnergyPrice UAH/MWt*hour</span>
+                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.EnergyPrice)) - </span>
+                            <span>@(CurrentResponce.CurrencyName)/@LanguageService.GetTraslation(LanguageKeys.PowerName)*@LanguageService.GetTraslation(LanguageKeys.Hour)</span>
                         </div>
                         <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.MinGenetation)) - @CurrentResponce.MinGenetation MWt/Month</span>
+                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.MinGenetation)) - @CurrentResponce.MinGenetation </span>
+                            <span>@LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Month)</span>
                         </div>
                         <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.MaxGeneration)) - @CurrentResponce.MaxGeneration MWt/Month</span>
+                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.MaxGeneration)) - @CurrentResponce.MaxGeneration </span>
+                            <span>@LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Month)</span>
                         </div>
                     </div>
                 </div>

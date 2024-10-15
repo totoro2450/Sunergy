@@ -14,9 +14,14 @@ if (builder.HostEnvironment.IsDevelopment())
 else
     baseAddress = builder.HostEnvironment.BaseAddress;
 
-using var httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
-Console.WriteLine("Uri: " + new Uri(builder.HostEnvironment.BaseAddress));
-mapKeyResponse = await httpClient.GetStringAsync("api/GetMapToken");
+try {
+    using var httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
+    mapKeyResponse = await httpClient.GetStringAsync("api/GetMapToken");
+    if (string.IsNullOrEmpty(mapKeyResponse)) mapKeyResponse = "TokenNotFound";
+}
+catch {
+    mapKeyResponse = "TokenNotFound";
+}
 
 builder.Services.AddBlazorGoogleMaps(mapKeyResponse);
 

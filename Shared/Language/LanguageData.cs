@@ -15,9 +15,10 @@ namespace BlazorApp.Shared.Laguage
             { LanguageKeys.GetMapToken, "Get Map Token" },
             { LanguageKeys.TokenNotFound, "Token Not Found..." },
             { LanguageKeys.InvalidRequestPayload, "Invalid request payload." },
-            { LanguageKeys.CalculateFunctionProcessed, "Calculate function processed a request." },
-            { LanguageKeys.GetMapTokenFunctionProcessed, "GetMapToken function processed a request." },
-            { LanguageKeys.GetKnownLocationsFunctionProcessed, "GetKnownLocations function processed a request." },
+            { LanguageKeys.PowerName, "MWt" },
+            { LanguageKeys.Month, "Month" },
+            { LanguageKeys.Year, "Year" },
+            { LanguageKeys.Hour, "Hour" },
             { LanguageKeys.Summary, "Summary" },
             { LanguageKeys.Date, "Date" },
             { LanguageKeys.AddNewObject, "Add New Object" },
@@ -32,12 +33,15 @@ namespace BlazorApp.Shared.Laguage
             { LanguageKeys.EnergyPriceNote, "For default - left empty. Default value: " },
             { LanguageKeys.CurrencyName, "Currency Name" },
             { LanguageKeys.TotalInvestment, "Total Investment" },
-            { LanguageKeys.AvgGeneration, "Average Generation. MWt/Year" },
-            { LanguageKeys.MinGenetation, "Minimum Generation. MWt/Month" },
-            { LanguageKeys.MaxGeneration, "Maximum Generation MWt/Month" },
+            { LanguageKeys.AvgGeneration, "Average Generation" }, // Average Generation. MWt/Year
+            { LanguageKeys.MinGenetation, "Minimum Generation" }, // Minimum Generation. MWt/Month
+            { LanguageKeys.MaxGeneration, "Maximum Generation" }, // Maximum Generation MWt/Month
             { LanguageKeys.TotalIncome, "Average total income per Year" },
             { LanguageKeys.Coordinates, "Coordinates" },
-            { LanguageKeys.EffectiveRoofArea, "Effective Roof Area" }
+            { LanguageKeys.EffectiveRoofArea, "Effective Roof Area" },
+
+            // Errors
+            { LanguageKeys.ServerError, "Server Error. Please try later. " }
         };
 
         public static Dictionary<LanguageKeys, string> Ukrainian = new Dictionary<LanguageKeys, string>
@@ -50,9 +54,10 @@ namespace BlazorApp.Shared.Laguage
             { LanguageKeys.GetMapToken, "Отримати токен карти" },
             { LanguageKeys.TokenNotFound, "Токен не знайдено..." },
             { LanguageKeys.InvalidRequestPayload, "Недійсний запит." },
-            { LanguageKeys.CalculateFunctionProcessed, "Функція обчислення обробила запит." },
-            { LanguageKeys.GetMapTokenFunctionProcessed, "Функція GetMapToken обробила запит." },
-            { LanguageKeys.GetKnownLocationsFunctionProcessed, "Функція GetKnownLocations обробила запит." },
+            { LanguageKeys.PowerName, "МВт" },
+            { LanguageKeys.Month, "Місяць" },
+            { LanguageKeys.Year, "Рік" },
+            { LanguageKeys.Hour, "год." },
             { LanguageKeys.Summary, "Опис" },
             { LanguageKeys.Date, "Дата" },
             { LanguageKeys.AddNewObject, "Додати новий об'єкт" },
@@ -66,13 +71,16 @@ namespace BlazorApp.Shared.Laguage
             { LanguageKeys.EnergyPrice, "Ціна енергії" },
             { LanguageKeys.EnergyPriceNote, "Можна залишити пустим. Значення за замовченням: " },
             { LanguageKeys.CurrencyName, "Назва валюти" },
-            { LanguageKeys.TotalInvestment, "Загальна інвестиції" },
-            { LanguageKeys.AvgGeneration, "Середня генерація, МВт/Рік" },
-            { LanguageKeys.MinGenetation, "Мінімальна генерація, МВт/Місяц" },
-            { LanguageKeys.MaxGeneration, "Максимальна генерація, МВт/Місяц" },
+            { LanguageKeys.TotalInvestment, "Загальні інвестиції" },
+            { LanguageKeys.AvgGeneration, "Середня генерація" }, // "Середня генерація, МВт/Рік"
+            { LanguageKeys.MinGenetation, "Мінімальна генерація" }, // "Мінімальна генерація, МВт/Місяц"
+            { LanguageKeys.MaxGeneration, "Максимальна генерація" }, // "Максимальна генерація, МВт/Місяц"
             { LanguageKeys.TotalIncome, "Середній загальний дохід за рік" },
             { LanguageKeys.Coordinates, "Координати" },
-            { LanguageKeys.EffectiveRoofArea, "Ефективна площа даху" }
+            { LanguageKeys.EffectiveRoofArea, "Ефективна площа даху" },
+
+            // Errors
+            { LanguageKeys.ServerError, "Помилка сервера. Будь ласка, спробуйте пізніше. " }
         };
     }
 }
