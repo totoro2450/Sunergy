@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using BlazorApp.Shared.Classes;
 using System.Net.Http.Json;
 using BlazorApp.Client.Extensions;
+using BlazorApp.Shared.Language;
 
 namespace BlazorApp.Client.Layout
 {
@@ -24,9 +25,12 @@ namespace BlazorApp.Client.Layout
         private List<string> Errors = [];
         private MapOptions _mapOptions = default!;
         private Stack<Marker> _markers = new Stack<Marker>();
+        private string SearchString = string.Empty;
 
         protected override void OnInitialized()
         {
+            SearchString = LanguageService.GetTraslation(LanguageKeys.CalculatorHeader);
+
             _mapOptions = new MapOptions()
             {
                 Zoom = DefaultZoom,

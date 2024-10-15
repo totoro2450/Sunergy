@@ -10,7 +10,7 @@
 
 <div class="main-row px-main">
     <div class="row border-bottom border-2 border-dark px-3 bm-2 bg-white">
-        <h2>@LanguageService.GetTraslation(LanguageKeys.CalculatorHeader)</h2>
+        <input @bind-value="SearchString" />
     </div>
 
     @if (ContainErrors)
