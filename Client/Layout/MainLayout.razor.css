@@ -1,5 +1,16 @@
-.page {
+/* .page {
     margin: 0 20px;
+} */
+
+.header{
+    background-image: linear-gradient(to bottom, #0052B4, #0063dd);
+}
+
+/* styles for text */
+
+.title_block{
+    font-size: 56px;
+    font-family: 'Rajdhani', sans-serif;
 }
 
 main {}

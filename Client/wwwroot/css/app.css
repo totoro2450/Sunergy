@@ -1,6 +1,14 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #258cfb;
+    /* background-color: #258cfb; */
+}
+
+ body {
+    background-color: #5757570d !important; 
+    background-image: url('/images/bg.png');
+    background-size: cover;
+    /* background-position: center; */
+    background-repeat: repeat;
 }
 
 h1:focus {
@@ -101,4 +109,26 @@ a, .btn-link {
 
 code {
     color: #c02d76;
+}
+
+/* font style */
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.main-row{
+    max-width: 1920px;
+}
+
+.px-main {
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+@media (min-width: 1200px) {
+    .px-main {
+        padding-right: 10%;
+        padding-left: 10%;
+    }
 }

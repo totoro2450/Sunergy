@@ -8,9 +8,11 @@
 @inject HttpClient Http
 @inject LanguageService LanguageService
 
-<div class="main-row px-main">
-    <div class="row border-bottom border-2 border-dark px-3 bm-2 bg-white">
-        <input @bind-value="SearchString" />
+
+<div class="container-fluid d-flex header justify-content-center w-100">
+<div class="main-row px-main row w-100">
+    <div class="col border-bottom border-2 border-dark px-3 bm-2 bg-white">
+       <input @bind-value="SearchString" />
     </div>
 
     @if (ContainErrors)
@@ -237,4 +239,5 @@
             </div>
         </div>
     }
+</div>
 </div>
