@@ -1,11 +1,10 @@
 /* .page {
     margin: 0 20px;
 } */
- .header {
-    position: absolute !important;
-    z-index: 1 !important;
-}
 
+.header{
+    background-image: linear-gradient(to bottom, #0052B4, #0063dd);
+}
 
 /* styles for text */
 
