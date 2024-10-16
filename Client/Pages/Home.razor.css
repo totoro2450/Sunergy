@@ -14,19 +14,19 @@ background-color: red;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: calc(100vh - 200px);
+    /* height: calc(100vh - 200px); */
     margin: 0;
     padding: 0;
     color: white;
-    flex-flow: column;
+    flex-flow: wrap;
 }
 
-@media (max-width: 1200px) {
+/* @media (max-width: 1200px) {
     .home-banner {
         height: calc(100vh - 200px);
     }
 
-}
+} */
 
 .title-container {
     margin-top: 232px;
@@ -42,6 +42,9 @@ background-color: red;
     }
 }
 
+.view-container{
+    margin-bottom: -70px;
+}
 
 /* .title-main {
     padding-left: 10%; 
