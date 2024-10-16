@@ -113,22 +113,22 @@ code {
 
 /* font style */
 
-body {
+/* body {
     font-family: 'Rajdhani', sans-serif;
-}
+} */
 
 .main-row{
-    max-width: 1920px;
+    max-width: 1400px;
 }
 
-.px-main {
+/* .px-main {
     padding-right: 5%;
     padding-left: 5%;
-}
+} */
 
 @media (min-width: 1200px) {
     .px-main {
-        padding-right: 10%;
-        padding-left: 10%;
+        padding-right: 2%;
+        padding-left: 2%;
     }
 }
