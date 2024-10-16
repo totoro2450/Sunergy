@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Components;
 using BlazorApp.Shared.Classes;
 using System.Net.Http.Json;
 using BlazorApp.Client.Extensions;
-using BlazorApp.Shared.Language;
+using BlazorApp.Client.Services;
+
 
 namespace BlazorApp.Client.Layout
 {
@@ -13,14 +14,13 @@ namespace BlazorApp.Client.Layout
         public const string LocalhostApiUri = "http://localhost";
         public const string LocalHostApiPort = "7071";
         public static readonly Coordinates DefaultCoordinates = new(51.521654, 30.754540);
-        private string BaseAddress = "";
         private static int DefaultZoom = 15;
         private GoogleMap _map1 = default!;
         private bool _showLocationsList = false;
         private bool _showDetails = false;
         private CalculateRequest? CurrentRequest;
         private CalculateResponce? CurrentResponce;
-        private List<CalculateRequest> KnownLocaltions = [];
+        private List<PlacesPrediction> Predictions = [];
         private bool ContainErrors = false;
         private List<string> Errors = [];
         private MapOptions _mapOptions = default!;
@@ -29,8 +29,6 @@ namespace BlazorApp.Client.Layout
 
         protected override void OnInitialized()
         {
-            SearchString = LanguageService.GetTraslation(LanguageKeys.CalculatorHeader);
-
             _mapOptions = new MapOptions()
             {
                 Zoom = DefaultZoom,
@@ -41,18 +39,7 @@ namespace BlazorApp.Client.Layout
 
         private async Task OnAfterInitAsync()
         {
-            await GetKnownLocations();
-
             await _map1.InteropObject.AddListener<MouseEvent>("click", async (e) => await OnClick(e));
-        }
-
-        private void UpdateCurrentBaseAddress()
-        {
-            var baseAddress = NavigationManager.BaseUri;
-            if (baseAddress.StartsWith(LocalhostApiUri))
-                BaseAddress = $"{LocalhostApiUri}:{LocalHostApiPort}";
-            else
-                BaseAddress = baseAddress;
         }
 
         private async Task Calculate()
@@ -60,43 +47,14 @@ namespace BlazorApp.Client.Layout
             ClearErrors();
             try
             {
-                var response = await Http.PostAsJsonAsync($"{BaseAddress}/api/Calculate", CurrentRequest);
-                if (!response.IsSuccessStatusCode)
-                {
-                    SetError(LanguageService.GetTraslation(Shared.Language.LanguageKeys.ServerError));
-                    Console.WriteLine(response.ReasonPhrase);
-                    return;
-                }
-                var result = await response.Content.ReadFromJsonAsync<CalculateResponce>();
-                CurrentResponce = result;
+                CurrentResponce = await NetworkService.Calculate(CurrentRequest);
             }
             catch (Exception ex)
             {
                 SetError(LanguageService.GetTraslation(Shared.Language.LanguageKeys.ServerError));
+                AddError(ex.Message);
                 Console.WriteLine(ex.Message);
             }
-        }
-
-        private async Task GetKnownLocations()
-        {
-            try
-            {
-                var response = await Http.PostAsync($"{BaseAddress}/api/GetKnownLocations", new StringContent(""));
-                if (!response.IsSuccessStatusCode)
-                {
-                    KnownLocaltions = [];
-                    return;
-                }
-                var knownLocaltions = await response.Content.ReadFromJsonAsync<List<CalculateRequest>>();
-                if (knownLocaltions != null && knownLocaltions.Count > 0)
-                    KnownLocaltions = knownLocaltions;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            StateHasChanged();
         }
 
         private bool IsValidRequest()
@@ -119,9 +77,25 @@ namespace BlazorApp.Client.Layout
             _showLocationsList = false;
         }
 
-        private async Task OnLocationSelect(CalculateRequest request)
+        // private async Task LocationSearch(ChangeEventArgs e)
+        private async Task LocationSearch(string input)
         {
-            if (request == null) return;
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Predictions.Clear();
+                HideLocationsList();
+                return;
+            }
+
+            Predictions = await NetworkService.GetPredictions(input);
+            ShowLocationsList();
+        }
+
+        private async Task OnLocationSelect(PlacesPrediction prediction)
+        {
+            if (prediction == null) return;
+
+            var request = await NetworkService.GetLocation(prediction);
             CurrentRequest = request;
             await AddMarker(request.Coordinates);
             await ShowMarkerOnMap(request.Coordinates);
