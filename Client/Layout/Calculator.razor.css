@@ -1,4 +1,7 @@
-﻿
+﻿.nowrap {
+    white-space: nowrap;
+    width: 1%;
+}
 
 .calculator-main ::deep gmp-map {
     height: calc(100vh - 150px);
@@ -9,7 +12,88 @@
 }
 
 .result-item {
-    padding-right: 5%;
-    padding-left: 5%;
+    width: 270px;
+    height: 100%;
+    background: #E3F5FF;
 }
+
+@media (max-width: 992px) {
+    .result-item {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.result-title {
+    font-size: 1rem;
+}
+
+
+.result-number {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.result-number-text {
+    font-size: 0.8rem;
+}
+
 /* Optional: Makes the sample page fill the window. */
+
+.map-title {
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+}
+
+.map-input {
+    height: 3.3rem;
+    outline: none;
+    font-size: 1.3rem;
+}
+
+.calc-container {
+    background: white;
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+    min-height: 80vh;
+    align-content: flex-start;
+}
+
+.input-container input {
+    border: 0;
+    border-radius: 5px;
+    box-shadow: inset 0px 0px 1px 1px rgb(0 0 0 / 9%);
+    padding: 5px 10px;
+}
+
+.input-container input:focus-visible {
+    outline: none;
+    box-shadow: inset 0px 0px 1px 1px rgb(193 223 255);
+}
+
+.additional-info {
+    font-size: 0.85rem;
+    color: #6d6d6d;
+}
+
+.detailsInfoAccordion {
+    background: white;
+}
+
+.accordion-item {
+    background: transparent;
+    border: none;
+}
+
+.nowrap {
+    white-space: nowrap;
+    width: 1%;
+}
+
+.label {
+    font-weight: 600;
+}
+
+::deep #map1 {
+    min-height: 550px;
+}
