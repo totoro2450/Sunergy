@@ -1,32 +1,35 @@
+using System;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
-using BlazorApp.Shared;
 using BlazorApp.Shared.Classes;
 using BlazorApp.Shared.Data;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 
 namespace Api
 {
     public class HttpTrigger
     {
         private readonly ILogger _logger;
+        private HttpClient _httpClient;
+        public static string GoogleBaseAddress = "https://maps.googleapis.com/maps/api";
+        public static string GooglePlaceUri = "/place/autocomplete/json";
 
         public HttpTrigger(ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<HttpTrigger>();
+            _httpClient = new HttpClient();
         }
 
         [Function("GetMapToken")]
         public HttpResponseData GetMapToken([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             _logger.LogInformation("GetMapToken function processed a request.");
-            var api_key = Environment.GetEnvironmentVariable("GOOGLE_MAP_API_KEY", EnvironmentVariableTarget.Process);
-            api_key ??= Environment.GetEnvironmentVariable("GOOGLE_MAP_API_KEY", EnvironmentVariableTarget.Machine);
-            api_key ??= "Token Not Found...";
             var response = req.CreateResponse(HttpStatusCode.OK);
-            response.WriteString(api_key);
+            response.WriteString(GetApiKey());
 
             return response;
         }
@@ -60,6 +63,54 @@ namespace Api
             await response.WriteAsJsonAsync(ObjectsData.KnownObjects);
 
             return response;
+        }
+
+        [Function("GetPredictions")]
+        public async Task<HttpResponseData> GetPredictions([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req)
+        {
+            var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            var request = JsonSerializer.Deserialize<GetGoogleMapLocationsRequest>(requestBody);
+            var inputType = request?.Inputtype ?? "textquery";
+            var input = request?.Input ?? ObjectsData.DefaultCity;
+
+            var url = $"{GoogleBaseAddress}{GooglePlaceUri}?input={Uri.EscapeDataString(input)}&key={GetApiKey()}";
+
+            try
+            {
+                var res = await _httpClient.GetStringAsync(url);
+                var json = JObject.Parse(res);
+                var results = json["predictions"];
+                var predictions = new List<PlacesPrediction>();
+
+                if (results != null)
+                {
+                    foreach (var result in results)
+                    {
+                        var prediction = new PlacesPrediction {
+                            Description = result["description"]?.ToString(),
+                            Address = result["description"]?.ToString(),
+                            LocationSource = LocationSource.Google
+                        };
+                        predictions.Add(prediction);
+                    }
+                }
+
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteAsJsonAsync(predictions);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error fetching locations: {ex.Message}");
+                var errorResponse = req.CreateResponse(HttpStatusCode.InternalServerError);
+                await errorResponse.WriteStringAsync("An error occurred while fetching locations.");
+                return errorResponse;
+            }
+
+            //var response = req.CreateResponse(HttpStatusCode.OK);
+            //await response.WriteAsJsonAsync(locations);
+
+            //return response;
         }
 
         private CalculateResponce CalculateEfficiency(CalculateRequest request)
@@ -97,6 +148,15 @@ namespace Api
             };
 
             return responce;
+        }
+
+        private string GetApiKey()
+        {
+            var api_key = Environment.GetEnvironmentVariable("GOOGLE_MAP_API_KEY", EnvironmentVariableTarget.Process);
+            api_key ??= Environment.GetEnvironmentVariable("GOOGLE_MAP_API_KEY", EnvironmentVariableTarget.Machine);
+            api_key ??= "Token Not Found...";
+
+            return api_key;
         }
     }
 }

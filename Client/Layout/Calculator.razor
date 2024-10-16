@@ -1,243 +1,273 @@
-﻿@using BlazorApp.Shared.Data
+﻿@using BlazorApp.Client.Components
+@using BlazorApp.Shared.Data
 @using BlazorApp.Shared.Laguage
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
+@using BlazorApp.Client.Services
 @using LanguageKeys = BlazorApp.Shared.Language.LanguageKeys
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject HttpClient Http
 @inject LanguageService LanguageService
-
+@inject NetworkService NetworkService
 
 <div class="container-fluid d-flex header justify-content-center w-100">
-<div class="main-row px-main row w-100">
-    <div class="col border-bottom border-2 border-dark px-3 bm-2 bg-white">
-       <input @bind-value="SearchString" />
-    </div>
-
-    @if (ContainErrors)
-    {
-        <div class="row my-2">
-            @foreach (var error in Errors)
-            {
-                <div class="col">
-                    <div class="alert alert-danger d-flex justify-content-between" role="alert">
-                        @error
-                        <div role="button" class="btn btn-close" @onclick="()=> RemoveError(error)"></div>
-                    </div>
-                </div>
-            }
-        </div>
-    }
-
-    <div class="row py-2 pb-5">
-        <div class="col-12 col-md-6">
-            <div class="row pb-2">
-                <div class="col-auto @(KnownLocaltions.Any()? "": "d-none")">
-                    <div class="dropdown">
-                        <button @onclick="ToggleLocationsList"
-                                class="btn btn-primary dropdown-toggle"
-                                type="button"
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false">
-                            @LanguageService.GetTraslation("KnownLocations")
-                        </button>
-                        <div class="dropdown-menu @(_showLocationsList? "d-block": "d-none")" aria-labelledby="dropdownMenuButton">
-                            @foreach (var location in KnownLocaltions)
-                            {
-                                <span role="button" class="dropdown-item" href="#" @onclick="() => OnLocationSelect(location)">@location.Title - @location.Address</span>
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <button @onclick="async () => await AddNewLocation()"
-                            class="btn btn-primary"
-                            type="button"
-                            id="dropdownMenuButton">
-                        @LanguageService.GetTraslation(LanguageKeys.AddNewObject)
-                    </button>
+    <div class="main-row px-main row w-100">
+        <div class="col border-bottom border-2 border-dark px-3 bm-2 bg-white">
+            @* <DebouncedInput Value="@SearchString"
+                            ValueChanged="LocationSearch"
+                            DebounceMilliseconds="500"
+                            Placeholder="@LanguageService.GetTraslation(LanguageKeys.CalculatorHeader)" /> *@
+            <input value="@SearchString" @onchange="LocationSearch" />
+            <div class="dropdown">
+                @* <button @onclick="ToggleLocationsList"
+                        class="btn btn-primary dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    @LanguageService.GetTraslation("KnownLocations")
+                </button> *@
+                
+                <div class="dropdown-menu @(_showLocationsList? "d-block": "d-none")" aria-labelledby="dropdownMenuButton">
+                    @foreach (var prediction in Predictions)
+                    {
+                        @if (prediction.LocationSource == Shared.Classes.LocationSource.Known)
+                        {
+                            <span role="button" class="dropdown-item" href="#" @onclick="() => OnLocationSelect(prediction)">@prediction.Description - @prediction.Address</span>
+                        }
+                        @if (prediction.LocationSource == Shared.Classes.LocationSource.Google)
+                        {
+                            <span role="button" class="dropdown-item" href="#" @onclick="() => OnLocationSelect(prediction)">@prediction.Address</span>
+                        }
+                    }
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    @if (CurrentRequest != null)
+        </div>
+        @if (ContainErrors)
+        {
+            <div class="row my-2">
+                @foreach (var error in Errors)
+                {
+                    <div class="col">
+                        <div class="alert alert-danger d-flex justify-content-between" role="alert">
+                            @error
+                            <div role="button" class="btn btn-close" @onclick="()=> RemoveError(error)"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="row py-2 pb-5">
+            <div class="col-12 col-md-6">
+                <div class="row pb-2">
+                    @* <div class="col-auto @(KnownLocaltions.Any()? "": "d-none")"> *@
+                        @* <div class="dropdown">
+                            <button @onclick="ToggleLocationsList"
+                                    class="btn btn-primary dropdown-toggle"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                @LanguageService.GetTraslation("KnownLocations")
+                            </button>
+                            <div class="dropdown-menu @(_showLocationsList? "d-block": "d-none")" aria-labelledby="dropdownMenuButton">
+                                @foreach (var location in KnownLocaltions)
+                                {
+                                    <span role="button" class="dropdown-item" href="#" @onclick="() => OnLocationSelect(location)">@location.Title - @location.Address</span>
+                                }
+                            </div>
+                        </div> *@
+                    @* </div> *@
+                    <div class="col-auto">
+                        <button @onclick="async () => await AddNewLocation()"
+                                class="btn btn-primary"
+                                type="button"
+                                id="dropdownMenuButton">
+                            @LanguageService.GetTraslation(LanguageKeys.AddNewObject)
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        @if (CurrentRequest != null)
+                        {
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Title))</span>
+                                </div>
+                                <div class="col-12">
+                                    <input class="w-100" type="text" name="@nameof(CurrentRequest.Title)" @bind-value="CurrentRequest.Title" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Address))</span>
+                                </div>
+                                <div class="col-12">
+                                    <input class="w-100" type="text" name="@nameof(CurrentRequest.Address)" @bind-value="CurrentRequest.Address" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <span>@LanguageService.GetTraslation(nameof(CurrentRequest.RoofArea))</span>
+                                </div>
+                                <div class="col-12">
+                                    <input class="w-100" type="text" name="@nameof(CurrentRequest.RoofArea)" @bind-value="CurrentRequest.RoofArea" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Coordinates.Latitude))</span>
+                                    <span>@CurrentRequest.Coordinates.Latitude</span>
+                                </div>
+                                <div class="col-6">
+                                    <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Coordinates.Longitude))</span>
+                                    <span>@CurrentRequest.Coordinates.Longitude</span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <span>@LanguageService.GetTraslation(nameof(CurrentRequest.InvestmentPrice))</span>
+                                </div>
+                                <div class="col-12">
+                                    <input class="w-100" type="text" name="@nameof(CurrentRequest.InvestmentPrice)" @bind-value="CurrentRequest.InvestmentPrice" />
+                                    <span class="w-100">@LanguageService.GetTraslation(LanguageKeys.InvestmentPriceNote)</span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <span>@LanguageService.GetTraslation(nameof(CurrentRequest.EnergyPrice))</span>
+                                        </div>
+                                        <div class="col">
+                                            <span>@LanguageService.GetTraslation(nameof(CurrentRequest.CurrencyName))</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <input class="w-100" type="text" name="@nameof(CurrentRequest.EnergyPrice)" @bind-value="CurrentRequest.EnergyPrice" />
+                                        </div>
+                                        <div class="col">
+                                            <input class="w-100" type="text" name="@nameof(CurrentRequest.CurrencyName)" @bind-value="CurrentRequest.CurrencyName" />
+                                        </div>
+                                    </div>
+                                    <span class="w-100">@LanguageService.GetTraslation(LanguageKeys.EnergyPriceNote) @GenerationData.EnergyPrice</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @if (IsValidRequest())
                     {
-                        <div class="row mb-2">
+                        <div class="row">
                             <div class="col-12">
-                                <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Title))</span>
-                            </div>
-                            <div class="col-12">
-                                <input class="w-100" type="text" name="@nameof(CurrentRequest.Title)" @bind-value="CurrentRequest.Title" />
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-12">
-                                <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Address))</span>
-                            </div>
-                            <div class="col-12">
-                                <input class="w-100" type="text" name="@nameof(CurrentRequest.Address)" @bind-value="CurrentRequest.Address" />
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-12">
-                                <span>@LanguageService.GetTraslation(nameof(CurrentRequest.RoofArea))</span>
-                            </div>
-                            <div class="col-12">
-                                <input class="w-100" type="text" name="@nameof(CurrentRequest.RoofArea)" @bind-value="CurrentRequest.RoofArea" />
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-6">
-                                <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Coordinates.Latitude))</span>
-                                <span>@CurrentRequest.Coordinates.Latitude</span>
-                            </div>
-                            <div class="col-6">
-                                <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Coordinates.Longitude))</span>
-                                <span>@CurrentRequest.Coordinates.Longitude</span>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-12">
-                                <span>@LanguageService.GetTraslation(nameof(CurrentRequest.InvestmentPrice))</span>
-                            </div>
-                            <div class="col-12">
-                                <input class="w-100" type="text" name="@nameof(CurrentRequest.InvestmentPrice)" @bind-value="CurrentRequest.InvestmentPrice" />
-                                <span class="w-100">@LanguageService.GetTraslation(LanguageKeys.InvestmentPriceNote) @GenerationData.InvestmentPrice</span>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-12">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <span>@LanguageService.GetTraslation(nameof(CurrentRequest.EnergyPrice))</span>
-                                    </div>
-                                    <div class="col">
-                                        <span>@LanguageService.GetTraslation(nameof(CurrentRequest.CurrencyName))</span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-8">
-                                        <input class="w-100" type="text" name="@nameof(CurrentRequest.EnergyPrice)" @bind-value="CurrentRequest.EnergyPrice" />
-                                    </div>
-                                    <div class="col">
-                                        <input class="w-100" type="text" name="@nameof(CurrentRequest.CurrencyName)" @bind-value="CurrentRequest.CurrencyName" />
-                                    </div>
-                                </div>
-                                <span class="w-100">@LanguageService.GetTraslation(LanguageKeys.EnergyPriceNote) @GenerationData.EnergyPrice</span>
+                                <button class="btn btn-primary" @onclick="Calculate">@LanguageService.GetTraslation(LanguageKeys.Calculate)</button>
                             </div>
                         </div>
                     }
                 </div>
-                @if (IsValidRequest())
-                {
-                    <div class="row">
-                        <div class="col-12">
-                            <button class="btn btn-primary" @onclick="Calculate">@LanguageService.GetTraslation(LanguageKeys.Calculate)</button>
-                        </div>
-                    </div>
-                }
+            </div>
+            <div class="col-12 col-md-6">
+                <GoogleMap @ref="@_map1" Id="map1" Options="@_mapOptions" OnAfterInit="@(async () => await OnAfterInitAsync())">
+                </GoogleMap>
             </div>
         </div>
-        <div class="col-12 col-md-6">
-            <GoogleMap @ref="@_map1" Id="map1" Options="@_mapOptions" OnAfterInit="@(async () => await OnAfterInitAsync())">
-            </GoogleMap>
-        </div>
-    </div>
 
-    @if (CurrentResponce != null)
-    {
-        <div class="row px-5 mb-5">
-            <div class="col result-item">
-                <div class="col-12 bg-light p-3 rounded-3">
-                    <div class="pb-2">
-                        @LanguageService.GetTraslation(nameof(CurrentResponce.TotalInvestment))
-                    </div>
-                    <div>
-                        @MakeNumberReadable(CurrentResponce.TotalInvestment) @CurrentResponce.CurrencyName
-                    </div>
-                </div>
-            </div>
-            <div class="col result-item">
-                <div class="col-12 bg-light p-3 rounded-3">
-                    <div class="pb-2">
-                        @LanguageService.GetTraslation(nameof(CurrentResponce.AvgGeneration))
-                    </div>
-                    <div>
-                        @CurrentResponce.AvgGeneration
+        @if (CurrentResponce != null)
+        {
+            <div class="row px-5 mb-5">
+                <div class="col result-item">
+                    <div class="col-12 bg-light p-3 rounded-3">
+                        <div class="pb-2">
+                            @LanguageService.GetTraslation(nameof(CurrentResponce.TotalInvestment))
+                        </div>
+                        <div>
+                            @MakeNumberReadable(CurrentResponce.TotalInvestment) @CurrentResponce.CurrencyName
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col result-item">
-                <div class="col-12 bg-light p-3 rounded-3">
-                    <div class="pb-2">
-                        @LanguageService.GetTraslation(nameof(CurrentResponce.TotalIncome))
-                    </div>
-                    <div>
-                        @MakeNumberReadable(CurrentResponce.TotalIncome) @CurrentResponce.CurrencyName
+                <div class="col result-item">
+                    <div class="col-12 bg-light p-3 rounded-3">
+                        <div class="pb-2">
+                            @LanguageService.GetTraslation(nameof(CurrentResponce.AvgGeneration))
+                        </div>
+                        <div>
+                            @CurrentResponce.AvgGeneration
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="accordion mb-5" id="detailsAccordion">
-            <div class="accordion-item">
-                @if (!_showDetails)
-                {
-                    <button role="button" class="btn btn-secondary" @onclick="ToggleDetails">
-                        @LanguageService.GetTraslation(LanguageKeys.ShowDetailsAboutCalculations)
-                    </button>
-                }
-                else
-                {
-                    <button role="button" class="btn btn-secondary" @onclick="ToggleDetails">
-                        @LanguageService.GetTraslation(LanguageKeys.HideDetailsAboutCalculations)
-                    </button>
-                }
-                <div id="detailsInformation" class="mt-2 accordion-collapse collapse @(_showDetails? "show": "")" data-bs-parent="#accordionExample">
-                    <div class="row">
-                        <div class="col-12">
-                            <h5>@CurrentResponce.Title</h5>
+                <div class="col result-item">
+                    <div class="col-12 bg-light p-3 rounded-3">
+                        <div class="pb-2">
+                            @LanguageService.GetTraslation(nameof(CurrentResponce.TotalIncome))
                         </div>
-                        <div class="col-12">
-                            <span>@CurrentResponce.Address</span>
-                        </div>
-                        <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.TotalInvestment)) - @MakeNumberReadable(CurrentResponce.TotalInvestment)</span>
-                        </div>
-                        <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.AvgGeneration)) - @CurrentResponce.AvgGeneration </span>
-                            <span>@LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Year)</span>
-                        </div>
-                        <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.TotalIncome)) - @MakeNumberReadable(CurrentResponce.TotalIncome) @CurrentResponce.CurrencyName</span>
-                        </div>
-                        <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.Coordinates)) - @CurrentResponce.Coordinates.Latitude, @CurrentResponce.Coordinates.Longitude</span>
-                        </div>
-                        <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.RoofArea)) - @CurrentResponce.RoofArea</span>
-                        </div>
-                        <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.EffectiveRoofArea)) - @CurrentResponce.EffectiveRoofArea</span>
-                        </div>
-                        <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.EnergyPrice)) - </span>
-                            <span>@(CurrentResponce.CurrencyName)/@LanguageService.GetTraslation(LanguageKeys.PowerName)*@LanguageService.GetTraslation(LanguageKeys.Hour)</span>
-                        </div>
-                        <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.MinGenetation)) - @CurrentResponce.MinGenetation </span>
-                            <span>@LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Month)</span>
-                        </div>
-                        <div class="col-12">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentResponce.MaxGeneration)) - @CurrentResponce.MaxGeneration </span>
-                            <span>@LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Month)</span>
+                        <div>
+                            @MakeNumberReadable(CurrentResponce.TotalIncome) @CurrentResponce.CurrencyName
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+            <div class="accordion mb-5" id="detailsAccordion">
+                <div class="accordion-item">
+                    @if (!_showDetails)
+                    {
+                        <button role="button" class="btn btn-secondary" @onclick="ToggleDetails">
+                            @LanguageService.GetTraslation(LanguageKeys.ShowDetailsAboutCalculations)
+                        </button>
+                    }
+                    else
+                    {
+                        <button role="button" class="btn btn-secondary" @onclick="ToggleDetails">
+                            @LanguageService.GetTraslation(LanguageKeys.HideDetailsAboutCalculations)
+                        </button>
+                    }
+                    <div id="detailsInformation" class="mt-2 accordion-collapse collapse @(_showDetails? "show": "")" data-bs-parent="#accordionExample">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5>@CurrentResponce.Title</h5>
+                            </div>
+                            <div class="col-12">
+                                <span>@CurrentResponce.Address</span>
+                            </div>
+                            <div class="col-12">
+                                <span>@LanguageService.GetTraslation(nameof(CurrentResponce.TotalInvestment)) - @MakeNumberReadable(CurrentResponce.TotalInvestment)</span>
+                            </div>
+                            <div class="col-12">
+                                <span>@LanguageService.GetTraslation(nameof(CurrentResponce.AvgGeneration)) - @CurrentResponce.AvgGeneration </span>
+                                <span>@LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Year)</span>
+                            </div>
+                            <div class="col-12">
+                                <span>@LanguageService.GetTraslation(nameof(CurrentResponce.TotalIncome)) - @MakeNumberReadable(CurrentResponce.TotalIncome) @CurrentResponce.CurrencyName</span>
+                            </div>
+                            <div class="col-12">
+                                <span>@LanguageService.GetTraslation(nameof(CurrentResponce.Coordinates)) - @CurrentResponce.Coordinates.Latitude, @CurrentResponce.Coordinates.Longitude</span>
+                            </div>
+                            <div class="col-12">
+                                <span>@LanguageService.GetTraslation(nameof(CurrentResponce.RoofArea)) - @CurrentResponce.RoofArea</span>
+                            </div>
+                            <div class="col-12">
+                                <span>@LanguageService.GetTraslation(nameof(CurrentResponce.EffectiveRoofArea)) - @CurrentResponce.EffectiveRoofArea</span>
+                            </div>
+                            <div class="col-12">
+                                <span>@LanguageService.GetTraslation(nameof(CurrentResponce.EnergyPrice)) - </span>
+                                <span>@(CurrentResponce.CurrencyName)/@LanguageService.GetTraslation(LanguageKeys.PowerName)*@LanguageService.GetTraslation(LanguageKeys.Hour)</span>
+                            </div>
+                            <div class="col-12">
+                                <span>@LanguageService.GetTraslation(nameof(CurrentResponce.MinGenetation)) - @CurrentResponce.MinGenetation </span>
+                                <span>@LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Month)</span>
+                            </div>
+                            <div class="col-12">
+                                <span>@LanguageService.GetTraslation(nameof(CurrentResponce.MaxGeneration)) - @CurrentResponce.MaxGeneration </span>
+                                <span>@LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Month)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

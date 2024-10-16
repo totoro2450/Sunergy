@@ -1,0 +1,25 @@
+﻿@inject IJSRuntime JSRuntime
+
+<div id="GoogleAutocomplete">
+    <div class="row">
+        <div class="col-12">
+            <input class="w-100" @ref="AutocompleteRef" @bind="SearchString" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            @Location.Title
+        </div>
+        <div class="col-12">
+            @Location.Address
+        </div>
+        <div class="col-auto">
+            @Location.Coordinates.Latitude
+        </div>
+        <div class="col-auto">
+            @Location.Coordinates.Longitude
+        </div>
+    </div>
+
+</div>
