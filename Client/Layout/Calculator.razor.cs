@@ -77,9 +77,9 @@ namespace BlazorApp.Client.Layout
             _showLocationsList = false;
         }
 
-        private async Task LocationSearch(ChangeEventArgs e)
+        // private async Task LocationSearch(ChangeEventArgs e)
+        private async Task LocationSearch(string input)
         {
-            var input = e.Value?.ToString();
             if (string.IsNullOrWhiteSpace(input))
             {
                 Predictions.Clear();
