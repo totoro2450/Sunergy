@@ -5,7 +5,7 @@ html, body {
 
  body {
     background-color: #5757570d !important; 
-    background-image: url('/images/bg.png');
+    background-image: url('/Images/bg.png');
     background-size: cover;
     /* background-position: center; */
     background-repeat: repeat;

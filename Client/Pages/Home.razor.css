@@ -10,7 +10,7 @@ background-color: red;
 
 /* Стилі для навігаційного меню */
 .home-banner {
-    background-image: url('/images/homeImage.jpg');
+    background-image: url('/Images/homeImage.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -666,13 +666,13 @@ video {
 }
 
 .img1 {
-    background-image: url('/images/item1.jpg');
+    background-image: url('/Images/item1.jpg');
 }
 
 .img2 {
-    background-image: url('/images/item2.jpg');
+    background-image: url('/Images/item2.jpg');
 }
 
 .img3 {
-    background-image: url('/images/item3.jpg');
+    background-image: url('/Images/item3.jpg');
 }
