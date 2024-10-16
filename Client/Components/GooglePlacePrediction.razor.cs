@@ -26,7 +26,7 @@ namespace BlazorApp.Client.Components
             Autocomplete = await Autocomplete.CreateAsync(JSRuntime, AutocompleteRef, Options);
             await Autocomplete.AddListener("place_changed", OnPlaceChanged);
 
-            // await _autocomplete.AddListener("bounds_changed", OnBoundsChanged);
+            // await _autocomplete.AddListener("bounds_changed", OnBoundsChanged); 
             // await _autocomplete.AddListener("input_changed", OnInputChanged);
         }
 
