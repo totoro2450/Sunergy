@@ -1,4 +1,11 @@
-﻿<div class="main-row px-main row w-100">
+﻿@using BlazorApp.Shared.Laguage
+@using BlazorApp.Client.Components
+@using LanguageKeys = BlazorApp.Shared.Language.LanguageKeys
+@* @inject LanguageService LanguageService *@
+
+@inherits BaseComponent
+
+<div class="main-row px-main row w-100">
     <div class="logo col-auto">
         <NavLink class="nav-link align-middle" href="" Match="NavLinkMatch.All">
             <span class="bi bi-sun"></span>
@@ -11,28 +18,28 @@
         </button>
         <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door mr-2" aria-hidden="true"></span> Home 
+                <span class="bi bi-house-door mr-2" aria-hidden="true"></span> @T(LanguageKeys.HomeNavMenuItem)
             </NavLink>
             <NavLink class="nav-link" href="calculator">
-                <span class="bi bi-calculator mr-2" aria-hidden="true"></span> Calculator
+                <span class="bi bi-calculator mr-2" aria-hidden="true"></span> @T(LanguageKeys.CalculatorNavMenuItem)
             </NavLink>
             <NavLink class="nav-link" href="services">
-                <span class="bi bi-gear mr-2" aria-hidden="true"></span> Services
+                <span class="bi bi-gear mr-2" aria-hidden="true"></span> @T(LanguageKeys.ServicesNavMenuItem)
             </NavLink> 
             <NavLink class="nav-link" href="partners">
-                <span class="bi bi-people mr-2" aria-hidden="true"></span> Partners
+                <span class="bi bi-people mr-2" aria-hidden="true"></span> @T(LanguageKeys.PartnersNavMenuItem)
             </NavLink>
             <NavLink class="nav-link" href="support">
-                <span class="bi bi-headset mr-2" aria-hidden="true"></span> Support
+                <span class="bi bi-headset mr-2" aria-hidden="true"></span> @T(LanguageKeys.SupportNavMenuItem)
             </NavLink>
             <NavLink class="nav-link" href="aboutus">
-                <span class="bi bi-question-lg mr-2" aria-hidden="true"></span> About Us
+                <span class="bi bi-question-lg mr-2" aria-hidden="true"></span> @T(LanguageKeys.AboutUsNavMenuItem)
             </NavLink>
         </div>
     </div>
     <div class="contacts-header align-middle col-auto">
         <NavLink class="nav-link align-middle" href="contactus">
-            Contact Us
+            @T(LanguageKeys.ContactUsNavMenuItem)
             <span class="bi bi-envelope" aria-hidden="true"></span>
         </NavLink>
     </div>
