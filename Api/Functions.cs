@@ -56,7 +56,7 @@ namespace Api
         }
 
         [Function("GetKnownLocations")]
-        public async Task<HttpResponseData> GetKnownLocationsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req)
+        public async Task<HttpResponseData> GetKnownLocations([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req)
         {
             _logger.LogInformation("GetKnownLocations function processed a request.");
             var response = req.CreateResponse(HttpStatusCode.OK);
@@ -80,14 +80,15 @@ namespace Api
                 var res = await _httpClient.GetStringAsync(url);
                 var json = JObject.Parse(res);
                 var results = json["predictions"];
-                var predictions = new List<PlacesPrediction>();
+                var predictions = new List<Location>();
 
                 if (results != null)
                 {
                     foreach (var result in results)
                     {
-                        var prediction = new PlacesPrediction {
-                            Description = result["description"]?.ToString(),
+                        var prediction = new Location
+                        {
+                            Title = result["description"]?.ToString(),
                             Address = result["description"]?.ToString(),
                             LocationSource = LocationSource.Google
                         };
@@ -106,11 +107,6 @@ namespace Api
                 await errorResponse.WriteStringAsync("An error occurred while fetching locations.");
                 return errorResponse;
             }
-
-            //var response = req.CreateResponse(HttpStatusCode.OK);
-            //await response.WriteAsJsonAsync(locations);
-
-            //return response;
         }
 
         private CalculateResponce CalculateEfficiency(CalculateRequest request)

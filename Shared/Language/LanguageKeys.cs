@@ -40,5 +40,14 @@
 
         // Errors
         ServerError,
+
+        // NavMenu
+        HomeNavMenuItem,
+        CalculatorNavMenuItem,
+        ServicesNavMenuItem,
+        PartnersNavMenuItem,
+        SupportNavMenuItem,
+        AboutUsNavMenuItem,
+        ContactUsNavMenuItem
     }
 }

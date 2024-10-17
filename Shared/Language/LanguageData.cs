@@ -1,7 +1,6 @@
-﻿using BlazorApp.Shared.Language;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace BlazorApp.Shared.Laguage
+namespace BlazorApp.Shared.Language
 {
     public static class LanguageData
     {
@@ -41,7 +40,16 @@ namespace BlazorApp.Shared.Laguage
             { LanguageKeys.EffectiveRoofArea, "Effective Roof Area" },
 
             // Errors
-            { LanguageKeys.ServerError, "Server Error. Please try later. " }
+            { LanguageKeys.ServerError, "Server Error. Please try later. " },
+
+            // NavMenu
+            { LanguageKeys.HomeNavMenuItem, "Home" },
+            { LanguageKeys.CalculatorNavMenuItem, "Calculator" },
+            { LanguageKeys.ServicesNavMenuItem, "Services" },
+            { LanguageKeys.PartnersNavMenuItem, "Partners" },
+            { LanguageKeys.SupportNavMenuItem, "Support" },
+            { LanguageKeys.AboutUsNavMenuItem, "About Us" },
+            { LanguageKeys.ContactUsNavMenuItem, "Contact Us" }
         };
 
         public static Dictionary<LanguageKeys, string> Ukrainian = new Dictionary<LanguageKeys, string>
@@ -80,7 +88,16 @@ namespace BlazorApp.Shared.Laguage
             { LanguageKeys.EffectiveRoofArea, "Ефективна площа даху" },
 
             // Errors
-            { LanguageKeys.ServerError, "Помилка сервера. Будь ласка, спробуйте пізніше. " }
+            { LanguageKeys.ServerError, "Помилка сервера. Будь ласка, спробуйте пізніше. " },
+
+            // NavMenu
+            { LanguageKeys.HomeNavMenuItem, "Головна" },
+            { LanguageKeys.CalculatorNavMenuItem, "Калькулятор" },
+            { LanguageKeys.ServicesNavMenuItem, "Сервіси" },
+            { LanguageKeys.PartnersNavMenuItem, "Партнери" },
+            { LanguageKeys.SupportNavMenuItem, "Підтримка" },
+            { LanguageKeys.AboutUsNavMenuItem, "Про нас" },
+            { LanguageKeys.ContactUsNavMenuItem, "Написати" }
         };
     }
 }

@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using BlazorApp.Client;
 using GoogleMapsComponents;
-using BlazorApp.Shared.Laguage;
 using BlazorApp.Client.Services;
+using BlazorApp.Shared.Language;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -28,7 +28,7 @@ catch {
 builder.Services.AddBlazorGoogleMaps(mapKeyResponse);
 
 builder.Services.AddScoped(sp => httpClient);
-builder.Services.AddSingleton(lngService => new LanguageService(nameof(LanguageData.Ukrainian)));
+builder.Services.AddSingleton<LanguageService>(lngService => new LanguageService(nameof(LanguageData.Ukrainian)));
 builder.Services.AddSingleton(s => new NetworkService(httpClient, mapKeyResponse, baseAddress));
 
 builder.RootComponents.Add<App>("#app");

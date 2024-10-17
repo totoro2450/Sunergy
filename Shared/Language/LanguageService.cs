@@ -1,8 +1,7 @@
-﻿using BlazorApp.Shared.Language;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace BlazorApp.Shared.Laguage
+namespace BlazorApp.Shared.Language
 {
     public class LanguageService
     {
@@ -13,10 +12,10 @@ namespace BlazorApp.Shared.Laguage
         public LanguageService(string languageTag = "English")
         {
             CurrentLanguageTag = languageTag;
-            SetLaguage(CurrentLanguageTag);
+            SetLanguage(CurrentLanguageTag);
         }
 
-        public void SetLaguage(string laguage)
+        public void SetLanguage(string laguage)
         {
             switch (laguage)
             {
@@ -32,7 +31,7 @@ namespace BlazorApp.Shared.Laguage
             }
         }
 
-        public string GetTraslation(LanguageKeys key)
+        public string GetTranslation(LanguageKeys key)
         {
             if (CurrentLanguage.ContainsKey(key)) 
                 return CurrentLanguage[key];
@@ -42,10 +41,10 @@ namespace BlazorApp.Shared.Laguage
             return nameof(key);
         }
 
-        public string GetTraslation(string key)
+        public string GetTranslation(string key)
         {
             if (Enum.TryParse<LanguageKeys>(key, out var result))
-                return GetTraslation(result);
+                return GetTranslation(result);
 
             return key;
         }

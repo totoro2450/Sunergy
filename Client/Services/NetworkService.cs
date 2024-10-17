@@ -23,9 +23,9 @@ namespace BlazorApp.Client.Services
         private DateTime CacheTime { get; set; } = DateTime.MinValue;
         private int CacheTimeMinutes { get; set; } = 5;
 
-        public async Task<List<PlacesPrediction>> GetPredictions(string input)
+        public async Task<List<Location>> GetPredictions(string input)
         {
-            var results = new List<PlacesPrediction>();
+            var results = new List<Location>();
             var knownPredictions = await GetKnownPredictions(input);
             var googlePredictions = await GetGooglePredictions(input);
             results.AddRange(knownPredictions);
@@ -34,17 +34,17 @@ namespace BlazorApp.Client.Services
             return results;
         }
 
-        public async Task<CalculateRequest> GetLocation(PlacesPrediction placesPrediction)
+        public async Task<CalculateRequest> GetLocation(Location placesPrediction)
         {
             return placesPrediction.LocationSource switch
             {
-                LocationSource.Google => await GetGoogleLocation(placesPrediction.Description),
-                LocationSource.Known => await GetKnownLocation(placesPrediction.Description),
-                _ => new CalculateRequest { Address = placesPrediction.Description, Title = placesPrediction.Description },
+                LocationSource.Google => await GetGoogleLocation(placesPrediction.Title),
+                LocationSource.Known => await GetKnownLocation(placesPrediction.Title),
+                _ => new CalculateRequest { Address = placesPrediction.Title, Title = placesPrediction.Title },
             };
         }
 
-        public async Task<List<PlacesPrediction>> GetGooglePredictions(string input)
+        public async Task<List<Location>> GetGooglePredictions(string input)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace BlazorApp.Client.Services
                 if (!response.IsSuccessStatusCode)
                     throw new Exception(response.ReasonPhrase);
 
-                var predictions = await response.Content.ReadFromJsonAsync<List<PlacesPrediction>>();
+                var predictions = await response.Content.ReadFromJsonAsync<List<Location>>();
                 if (predictions != null && predictions.Count > 0)
                     return predictions;
                 else
@@ -91,15 +91,15 @@ namespace BlazorApp.Client.Services
             return KnownLocaltions.FirstOrDefault(l => l.Title == title)!;
         }
 
-        public async Task<List<PlacesPrediction>> GetKnownPredictions(string input)
+        public async Task<List<Location>> GetKnownPredictions(string input)
         {
             await GetKnownLocations();
             var searchString = input.ToLower();
             return KnownLocaltions.Where(l => l.Title.Contains(searchString, StringComparison.CurrentCultureIgnoreCase) ||
             l.Address.Contains(searchString, StringComparison.CurrentCultureIgnoreCase))
-                .Select(l => new PlacesPrediction
+                .Select(l => new Location
                 {
-                    Description = l.Title,
+                    Title = l.Title,
                     Address = l.Address,
                     LocationSource = LocationSource.Known
                 }).Take(5).ToList();
