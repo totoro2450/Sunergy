@@ -1,0 +1,9 @@
+﻿@using BlazorApp.Shared.Laguage
+@inherits LayoutComponentBase
+
+@code {
+    protected string GetTraslation(string key)
+    {
+        return LanguageService.GetTraslation(key);
+    }
+}
