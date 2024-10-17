@@ -1,15 +1,14 @@
 ﻿using GoogleMapsComponents.Maps;
 using GoogleMapsComponents;
-using Microsoft.AspNetCore.Components;
 using BlazorApp.Shared.Classes;
-using System.Net.Http.Json;
 using BlazorApp.Client.Extensions;
 using BlazorApp.Client.Services;
+using BlazorApp.Client.Components;
 
 
 namespace BlazorApp.Client.Layout
 {
-    public partial class Calculator : ComponentBase
+    public partial class Calculator : BaseComponent
     {
         public const string LocalhostApiUri = "http://localhost";
         public const string LocalHostApiPort = "7071";
@@ -20,7 +19,8 @@ namespace BlazorApp.Client.Layout
         private bool _showDetails = false;
         private CalculateRequest? CurrentRequest;
         private CalculateResponce? CurrentResponce;
-        private List<PlacesPrediction> Predictions = [];
+        private List<CalculateResponce> CalculateResponces = [];
+        private List<Location> Predictions = [];
         private bool ContainErrors = false;
         private List<string> Errors = [];
         private MapOptions _mapOptions = default!;
@@ -48,13 +48,19 @@ namespace BlazorApp.Client.Layout
             try
             {
                 CurrentResponce = await NetworkService.Calculate(CurrentRequest);
+                CalculateResponces.Add(CurrentResponce);
             }
             catch (Exception ex)
             {
-                SetError(LanguageService.GetTraslation(Shared.Language.LanguageKeys.ServerError));
+                SetError(GetTranslation(Shared.Language.LanguageKeys.ServerError));
                 AddError(ex.Message);
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private void ClearCurrentResponce()
+        {
+            CurrentResponce = null;
         }
 
         private bool IsValidRequest()
@@ -75,9 +81,9 @@ namespace BlazorApp.Client.Layout
                 : mapCenter.ToCoordinates();
 
             _showLocationsList = false;
+            ClearCurrentResponce();
         }
 
-        // private async Task LocationSearch(ChangeEventArgs e)
         private async Task LocationSearch(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
@@ -91,7 +97,7 @@ namespace BlazorApp.Client.Layout
             ShowLocationsList();
         }
 
-        private async Task OnLocationSelect(PlacesPrediction prediction)
+        private async Task OnLocationSelect(Location prediction)
         {
             if (prediction == null) return;
 
@@ -101,6 +107,7 @@ namespace BlazorApp.Client.Layout
             await ShowMarkerOnMap(request.Coordinates);
             await SetZoom(17);
             HideLocationsList();
+            ClearCurrentResponce();
         }
 
         private void ShowLocationsList()
@@ -136,7 +143,7 @@ namespace BlazorApp.Client.Layout
             await AddMarker(e.LatLng);
 
             StateHasChanged();
-            // e.Stop();
+            e.Stop();
         }
 
         private async Task AddMarker(LatLngLiteral latLngLiteral)

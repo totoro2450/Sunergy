@@ -1,7 +1,6 @@
-﻿using BlazorApp.Shared.Language;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace BlazorApp.Shared.Laguage
+namespace BlazorApp.Shared.Language
 {
     public static class LanguageData
     {
