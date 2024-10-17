@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using BlazorApp.Client;
 using GoogleMapsComponents;
-using BlazorApp.Shared.Laguage;
 using BlazorApp.Client.Services;
+using BlazorApp.Shared.Language;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

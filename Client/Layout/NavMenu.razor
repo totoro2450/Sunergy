@@ -1,7 +1,5 @@
-﻿@using BlazorApp.Shared.Laguage
-@using BlazorApp.Client.Components
+﻿@using BlazorApp.Client.Components
 @using LanguageKeys = BlazorApp.Shared.Language.LanguageKeys
-@* @inject LanguageService LanguageService *@
 
 @inherits BaseComponent
 
@@ -18,28 +16,28 @@
         </button>
         <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door mr-2" aria-hidden="true"></span> @T(LanguageKeys.HomeNavMenuItem)
+                <span class="bi bi-house-door mr-2" aria-hidden="true"></span> @GetTranslation(LanguageKeys.HomeNavMenuItem)
             </NavLink>
             <NavLink class="nav-link" href="calculator">
-                <span class="bi bi-calculator mr-2" aria-hidden="true"></span> @T(LanguageKeys.CalculatorNavMenuItem)
+                <span class="bi bi-calculator mr-2" aria-hidden="true"></span> @GetTranslation(LanguageKeys.CalculatorNavMenuItem)
             </NavLink>
             <NavLink class="nav-link" href="services">
-                <span class="bi bi-gear mr-2" aria-hidden="true"></span> @T(LanguageKeys.ServicesNavMenuItem)
+                <span class="bi bi-gear mr-2" aria-hidden="true"></span> @GetTranslation(LanguageKeys.ServicesNavMenuItem)
             </NavLink> 
             <NavLink class="nav-link" href="partners">
-                <span class="bi bi-people mr-2" aria-hidden="true"></span> @T(LanguageKeys.PartnersNavMenuItem)
+                <span class="bi bi-people mr-2" aria-hidden="true"></span> @GetTranslation(LanguageKeys.PartnersNavMenuItem)
             </NavLink>
             <NavLink class="nav-link" href="support">
-                <span class="bi bi-headset mr-2" aria-hidden="true"></span> @T(LanguageKeys.SupportNavMenuItem)
+                <span class="bi bi-headset mr-2" aria-hidden="true"></span> @GetTranslation(LanguageKeys.SupportNavMenuItem)
             </NavLink>
             <NavLink class="nav-link" href="aboutus">
-                <span class="bi bi-question-lg mr-2" aria-hidden="true"></span> @T(LanguageKeys.AboutUsNavMenuItem)
+                <span class="bi bi-question-lg mr-2" aria-hidden="true"></span> @GetTranslation(LanguageKeys.AboutUsNavMenuItem)
             </NavLink>
         </div>
     </div>
     <div class="contacts-header align-middle col-auto">
         <NavLink class="nav-link align-middle" href="contactus">
-            @T(LanguageKeys.ContactUsNavMenuItem)
+            @GetTranslation(LanguageKeys.ContactUsNavMenuItem)
             <span class="bi bi-envelope" aria-hidden="true"></span>
         </NavLink>
     </div>

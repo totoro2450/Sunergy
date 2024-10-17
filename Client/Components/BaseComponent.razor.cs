@@ -1,23 +1,22 @@
-﻿using BlazorApp.Shared.Laguage;
-using BlazorApp.Shared.Language;
+﻿using BlazorApp.Shared.Language;
 
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Client.Components
 {
-    public partial class BaseComponent : LayoutComponentBase
+    public partial class BaseComponent : ComponentBase
     {
         [Inject]
         protected LanguageService LanguageService { get; set; }
 
         protected string GetTranslation(LanguageKeys key)
         {
-            return LanguageService.GetTraslation(key);
+            return LanguageService.GetTranslation(key);
         }
 
-        protected string T(LanguageKeys key)
+        protected string GetTranslation(string key)
         {
-            return GetTranslation(key);
+            return LanguageService.GetTranslation(key);
         }
     }
 }

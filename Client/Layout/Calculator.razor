@@ -1,6 +1,7 @@
-﻿@using BlazorApp.Client.Components
+﻿@inherits BaseComponent
+@using BlazorApp.Client.Components
 @using BlazorApp.Shared.Data
-@using BlazorApp.Shared.Laguage
+@using BlazorApp.Shared.Language
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 @using BlazorApp.Client.Services
@@ -8,7 +9,6 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject HttpClient Http
-@inject LanguageService LanguageService
 @inject NetworkService NetworkService
 
 <div class="container-fluid d-flex header justify-content-center w-100">
@@ -17,14 +17,14 @@
             <DebouncedInput Value="@SearchString"
                             ValueChanged="LocationSearch"
                             DebounceMilliseconds="1000"
-                            Placeholder="@LanguageService.GetTraslation(LanguageKeys.CalculatorHeader)" />
+                            Placeholder="@LanguageService.GetTranslation(LanguageKeys.CalculatorHeader)" />
             <div class="dropdown">
                 <div class="dropdown-menu @(_showLocationsList? "d-block": "d-none")" aria-labelledby="dropdownMenuButton">
                     @foreach (var prediction in Predictions)
                     {
                         @if (prediction.LocationSource == Shared.Classes.LocationSource.Known)
                         {
-                            <span role="button" class="dropdown-item" href="#" @onclick="() => OnLocationSelect(prediction)">@prediction.Description - @prediction.Address</span>
+                            <span role="button" class="dropdown-item" href="#" @onclick="() => OnLocationSelect(prediction)">@prediction.Title - @prediction.Address</span>
                         }
                         @if (prediction.LocationSource == Shared.Classes.LocationSource.Google)
                         {
@@ -55,7 +55,7 @@
                     <div class="col-auto">
                         <button @onclick="async () => await AddNewLocation()" class="btn btn-primary" type="button"
                                 id="dropdownMenuButton">
-                            @LanguageService.GetTraslation(LanguageKeys.AddNewObject)
+                            @GetTranslation(LanguageKeys.AddNewObject)
                         </button>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                 {
                     <div class="row mb-2">
                         <div class="col-12 label">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Title))</span>
+                            <span>@GetTranslation(nameof(CurrentRequest.Title))</span>
                         </div>
                         <div class="col-12">
                             <input class="w-100" type="text" name="@nameof(CurrentRequest.Title)"
@@ -72,7 +72,7 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-12 label">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Address))</span>
+                            <span>@GetTranslation(nameof(CurrentRequest.Address))</span>
                         </div>
                         <div class="col-12">
                             <input class="w-100" type="text" name="@nameof(CurrentRequest.Address)"
@@ -81,7 +81,7 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-12 label">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentRequest.RoofArea))</span>
+                            <span>@GetTranslation(nameof(CurrentRequest.RoofArea))</span>
                         </div>
                         <div class="col-12">
                             <input class="w-100" type="text" name="@nameof(CurrentRequest.RoofArea)"
@@ -90,23 +90,23 @@
                     </div>
                     <div class="row mb-2 additional-info">
                         <div class="col-6">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Coordinates.Latitude))</span>
+                            <span>@GetTranslation(nameof(CurrentRequest.Coordinates.Latitude))</span>
                             <span>@CurrentRequest.Coordinates.Latitude</span>
                         </div>
                         <div class="col-6">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentRequest.Coordinates.Longitude))</span>
+                            <span>@GetTranslation(nameof(CurrentRequest.Coordinates.Longitude))</span>
                             <span>@CurrentRequest.Coordinates.Longitude</span>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-12 label">
-                            <span>@LanguageService.GetTraslation(nameof(CurrentRequest.InvestmentPrice))</span>
+                            <span>@GetTranslation(nameof(CurrentRequest.InvestmentPrice))</span>
                         </div>
                         <div class="col-12">
                             <input class="w-100" type="text" name="@nameof(CurrentRequest.InvestmentPrice)"
                                    @bind-value="CurrentRequest.InvestmentPrice" />
                             <span class="w-100 additional-info">
-                                @LanguageService.GetTraslation(LanguageKeys.InvestmentPriceNote)
+                                @GetTranslation(LanguageKeys.InvestmentPriceNote)
                             </span>
                         </div>
                     </div>
@@ -114,10 +114,10 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-8 label">
-                                    <span>@LanguageService.GetTraslation(nameof(CurrentRequest.EnergyPrice))</span>
+                                    <span>@GetTranslation(nameof(CurrentRequest.EnergyPrice))</span>
                                 </div>
                                 <div class="col label">
-                                    <span>@LanguageService.GetTraslation(nameof(CurrentRequest.CurrencyName))</span>
+                                    <span>@GetTranslation(nameof(CurrentRequest.CurrencyName))</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -131,7 +131,7 @@
                                 </div>
                             </div>
                             <span class="w-100 additional-info">
-                                @LanguageService.GetTraslation(LanguageKeys.EnergyPriceNote)
+                                @GetTranslation(LanguageKeys.EnergyPriceNote)
                                 @GenerationData.EnergyPrice
                             </span>
                         </div>
@@ -144,7 +144,7 @@
                         <div class="col-12">
                             <button class="btn btn-primary"
                                     @onclick="Calculate">
-                                @LanguageService.GetTraslation(LanguageKeys.Calculate)
+                                @GetTranslation(LanguageKeys.Calculate)
                             </button>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                 <div class="col-12 d-flex flex-wrap justify-content-around order-2 p-xl-5 py-3">
                     <div class="result-item rounded-3 p-3 my-1">
                         <div class="pb-2 result-title">
-                            @LanguageService.GetTraslation(nameof(CurrentResponce.TotalInvestment))
+                            @GetTranslation(nameof(CurrentResponce.TotalInvestment))
                         </div>
                         <div class=" align-items-center d-flex result-info">
                             <span class="result-number"> @MakeNumberReadable(CurrentResponce.TotalInvestment)</span>
@@ -171,18 +171,18 @@
                     </div>
                     <div class="result-item rounded-3 p-3 my-1">
                         <div class="pb-2 result-title">
-                            @LanguageService.GetTraslation(nameof(CurrentResponce.AvgGeneration))
+                            @GetTranslation(nameof(CurrentResponce.AvgGeneration))
                         </div>
                         <div class=" align-items-center d-flex result-info">
                             <span class="result-number"> @CurrentResponce.AvgGeneration</span>
-                            <span class="px-2 result-number-text">@LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Year)</span>
+                            <span class="px-2 result-number-text">@GetTranslation(LanguageKeys.PowerName)/@GetTranslation(LanguageKeys.Year)</span>
                         </div>
                         <div>
                         </div>
                     </div>
                     <div class=" result-item rounded-3 p-3 my-1">
                         <div class="pb-2 result-title">
-                            @LanguageService.GetTraslation(nameof(CurrentResponce.TotalIncome))
+                            @GetTranslation(nameof(CurrentResponce.TotalIncome))
                         </div>
                         <div class=" align-items-center d-flex result-info">
                             <span class="result-number">@MakeNumberReadable(CurrentResponce.TotalIncome)</span>
@@ -196,13 +196,13 @@
                         @if (!_showDetails)
                         {
                             <button role="button" class="btn btn-secondary" @onclick="ToggleDetails">
-                                @LanguageService.GetTraslation(LanguageKeys.ShowDetailsAboutCalculations)
+                                @GetTranslation(LanguageKeys.ShowDetailsAboutCalculations)
                             </button>
                         }
                         else
                         {
                             <button role="button" class="btn btn-secondary" @onclick="ToggleDetails">
-                                @LanguageService.GetTraslation(LanguageKeys.HideDetailsAboutCalculations)
+                                @GetTranslation(LanguageKeys.HideDetailsAboutCalculations)
                             </button>
                         }
                         <div id="detailsInformation" class="mt-4 detailsInfoAccordion accordion-collapse collapse @(_showDetails? "show": "")" data-bs-parent="#accordionExample">
@@ -215,21 +215,21 @@
                                         <td colspan="2">@CurrentResponce.Address</td>
                                     </tr>
                                     <tr>
-                                        <td class="nowrap">@LanguageService.GetTraslation(nameof(CurrentResponce.TotalInvestment))</td>
+                                        <td class="nowrap">@GetTranslation(nameof(CurrentResponce.TotalInvestment))</td>
                                         <td>
                                             <span class="table-number">@MakeNumberReadable(CurrentResponce.TotalInvestment)</span>
                                             <span class="table-currency">@CurrentResponce.CurrencyName</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="nowrap">@LanguageService.GetTraslation(nameof(CurrentResponce.AvgGeneration))</td>
+                                        <td class="nowrap">@GetTranslation(nameof(CurrentResponce.AvgGeneration))</td>
                                         <td>
                                             <span class="table-number">@CurrentResponce.AvgGeneration</span>
-                                            <span class="table-currency"> @LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Year)</span>
+                                            <span class="table-currency"> @GetTranslation(LanguageKeys.PowerName)/@GetTranslation(LanguageKeys.Year)</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="nowrap">@LanguageService.GetTraslation(nameof(CurrentResponce.TotalIncome))</td>
+                                        <td class="nowrap">@GetTranslation(nameof(CurrentResponce.TotalIncome))</td>
                                         <td>
                                             <span class="table-number">@MakeNumberReadable(CurrentResponce.TotalIncome)</span>
                                             <span class="table-currency"> @CurrentResponce.CurrencyName</span>
@@ -237,42 +237,42 @@
 
                                     </tr>
                                     <tr>
-                                        <td class="nowrap">@LanguageService.GetTraslation(nameof(CurrentResponce.Coordinates))</td>
+                                        <td class="nowrap">@GetTranslation(nameof(CurrentResponce.Coordinates))</td>
                                         <td>@CurrentResponce.Coordinates.Latitude, @CurrentResponce.Coordinates.Longitude</td>
                                     </tr>
                                     <tr>
-                                        <td class="nowrap">@LanguageService.GetTraslation(nameof(CurrentResponce.RoofArea))</td>
+                                        <td class="nowrap">@GetTranslation(nameof(CurrentResponce.RoofArea))</td>
                                         <td>
                                             <span class="table-number">@CurrentResponce.RoofArea</span>
                                             <span class="table-currency"> </span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="nowrap">@LanguageService.GetTraslation(nameof(CurrentResponce.EffectiveRoofArea))</td>
+                                        <td class="nowrap">@GetTranslation(nameof(CurrentResponce.EffectiveRoofArea))</td>
                                         <td>
                                             <span class="table-number">@CurrentResponce.EffectiveRoofArea</span>
                                             <span class="table-currency"> </span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="nowrap">@LanguageService.GetTraslation(nameof(CurrentResponce.EnergyPrice))</td>
+                                        <td class="nowrap">@GetTranslation(nameof(CurrentResponce.EnergyPrice))</td>
                                         <td>
                                             <span class="table-number"></span>
-                                            <span class="table-currency">@(CurrentResponce.CurrencyName)/@LanguageService.GetTraslation(LanguageKeys.PowerName)*@LanguageService.GetTraslation(LanguageKeys.Hour)</span>
+                                            <span class="table-currency">@(CurrentResponce.CurrencyName)/@GetTranslation(LanguageKeys.PowerName)*@GetTranslation(LanguageKeys.Hour)</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="nowrap">@LanguageService.GetTraslation(nameof(CurrentResponce.MinGenetation))</td>
+                                        <td class="nowrap">@GetTranslation(nameof(CurrentResponce.MinGenetation))</td>
                                         <td>
                                             <span class="table-number">@CurrentResponce.MinGenetation</span>
-                                            <span class="table-currency"> @LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Month)</span>
+                                            <span class="table-currency"> @GetTranslation(LanguageKeys.PowerName)/@GetTranslation(LanguageKeys.Month)</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="nowrap">@LanguageService.GetTraslation(nameof(CurrentResponce.MaxGeneration))</td>
+                                        <td class="nowrap">@GetTranslation(nameof(CurrentResponce.MaxGeneration))</td>
                                         <td>
                                             <span class="table-number">@CurrentResponce.MaxGeneration</span>
-                                            <span class="table-currency"> @LanguageService.GetTraslation(LanguageKeys.PowerName)/@LanguageService.GetTraslation(LanguageKeys.Month)</span>
+                                            <span class="table-currency"> @GetTranslation(LanguageKeys.PowerName)/@GetTranslation(LanguageKeys.Month)</span>
                                         </td>
                                     </tr>
                                 </tbody>
