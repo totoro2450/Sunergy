@@ -23,11 +23,26 @@ namespace BlazorApp.Shared.Classes
         [JsonPropertyName("roofAngle")]
         public double? RoofAngle { get; set; } = 0;
 
+        [JsonPropertyName("pVRadDataDase")]
+        public string PVRadDataDase { get; set; } = "PVGIS-ERA5";
+
+        [JsonPropertyName("pVPeakPower")]
+        public int PVPeakPower { get; set; } = 1;
+
+        [JsonPropertyName("pVLoss")]
+        public int PVLoss { get; set; } = 14;
+
+        [JsonPropertyName("pVAngle")]
+        public int PVAngle { get; set; } = 35;
+
+        [JsonPropertyName("pVAspect")]
+        public int? PVAspect { get; set; }
+
         [JsonPropertyName("energyPrice")]
         public double? EnergyPrice { get; set; } = 0;
 
         [JsonPropertyName("currencyName")]
-        public string CurrencyName { get; set; } = "USD";
+        public string CurrencyName { get; set; } = "Грн";
 
         [JsonPropertyName("investmentPrice")]
         public double? InvestmentPrice { get; set; } = 0;

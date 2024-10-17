@@ -12,7 +12,7 @@ namespace BlazorApp.Shared.Data
         public static List<CalculateRequest> KnownObjects = new List<CalculateRequest>()
         {
             new CalculateRequest {
-                Title = "Будівля магазину «Паляниця» (Арбат)",
+                Title = "Будівля магазину «Паляниця» (Арбат) asdf",
                 Address = "Поліський квартал, 8",
                 // {"Latitude":51.5221889,"Longitude":30.7457125}
                 Coordinates = new Coordinates { Latitude = 51.522608721257775, Longitude = 30.760145618420076 },
@@ -20,14 +20,14 @@ namespace BlazorApp.Shared.Data
                 CurrencyName = "Грн"
             },
             new CalculateRequest {
-                Title = "Будівля універмагу «Десна» (Мінськ)",
+                Title = "Будівля універмагу «Десна» (Мінськ) asdf",
                 Address = "Центральна площа, 5",
                 Coordinates = new Coordinates { Latitude = 51.520937, Longitude = 30.755824 },
                 RoofArea = 1182.1,
                 CurrencyName = "Грн"
             },
             new CalculateRequest {
-                Title = "Будівля Універсаму «Дніпро»",
+                Title = "Будівля Універсаму «Дніпро» asdf",
                 Address = "Проспект Незалежності, 5",
                 Coordinates = new Coordinates { Latitude = 51.520974446289394, Longitude = 30.75660786478983 },
                 RoofArea = 2342.1,
