@@ -45,7 +45,7 @@
     border-top-right-radius: 24px;
 }
 
-.map-input {
+::deep .map-input {
     height: 3.3rem;
     outline: none;
     font-size: 1.3rem;

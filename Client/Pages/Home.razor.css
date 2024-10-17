@@ -32,7 +32,6 @@ background-color: red;
     margin-top: 232px;
     color: white;
     font-weight: 600;
-    max-width: 1920px;
     align-content: flex-start;
 }
 
@@ -346,6 +345,11 @@ video {
     /* Робить текст великими буквами */
     padding-bottom: 10px;
     /* Додатковий відступ під текстом, якщо потрібно */
+}
+
+.title-blog span {
+border-bottom: 2px solid;
+border-color: #36BA6F;
 }
 
 /* Для екранів менше 1200px */
